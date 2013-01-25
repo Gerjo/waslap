@@ -1,11 +1,13 @@
 package core {
+	import Box2D.Collision.b2AABB;
+	import Box2D.Collision.b2Bound;
 	import Box2D.Common.Math.b2Vec2;
 	import flash.display.*
 	import core.*;
 	
 	public class Entity extends Sprite implements IUpdatable, IRenderable {
 		public function Entity() {
-		
+			
 		}
 		
 		public function update(time:Time) : void {
@@ -38,6 +40,21 @@ package core {
 			x = pos.x;
 			y = pos.y;
 			return this;
+		}
+		
+		public function getPosition() : b2Vec2 { 
+			return new b2Vec2(x, y);
+		}
+		
+		public function getSize() : b2Vec2 {
+			return new b2Vec2(width, height);
+		}
+		
+		public function getBox() : b2AABB {
+			var box:b2AABB = new b2AABB();
+			box.lowerBound = getPosition();
+			box.upperBound = new b2Vec2(width + x, height + y);
+			return box;
 		}
 	}
 }
