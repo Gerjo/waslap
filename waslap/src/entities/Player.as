@@ -16,7 +16,7 @@ package entities
 		
 		override public function update(time:Time):void {
 			super.update(time);
-			trace("I'm a player");
+			//trace("I'm a player");
 		}
 	}
 }

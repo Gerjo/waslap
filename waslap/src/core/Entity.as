@@ -21,8 +21,10 @@ package core {
 		
 		override public function addChild(child:DisplayObject):DisplayObject {
 			super.addChild(child);
-			(child as IRenderable).render();
 			
+			if(child is IRenderable) {
+				(child as IRenderable).render();
+			}
 			return child;
 		}
 		

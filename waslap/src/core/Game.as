@@ -1,5 +1,6 @@
 package core
 {
+	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import entities.*;
@@ -25,8 +26,6 @@ package core
 			
 			trace("The game is loaded and works - Thomas Jefferson (1820)");
 			trace(" - actually, that is an assumption - Winston Churchill (1946)");
-			
-			new Assets();
 		}
 		
 		public function init() : void {
@@ -41,6 +40,8 @@ package core
 			_players.push(new Player());
 			_entities.addChild(_players[0]);
 			_entities.addChild(_players[1]);
+			
+			_background.addChild(new Image("test"));
 		}
 		
 		public function enterFrame(event:Event) : void {
@@ -51,9 +52,9 @@ package core
 			super.update(time);
 			
 			if (_players[0].getBox().Contains(_players[1].getBox())) {
-				trace("Yay");
+				//("Yay");
 			} else {
-				trace("Nay");
+				//trace("Nay");
 			}
 		}
 	}
