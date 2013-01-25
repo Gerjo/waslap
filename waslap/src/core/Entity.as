@@ -1,4 +1,5 @@
 package core {
+	import Box2D.Common.Math.b2Vec2;
 	import flash.display.*
 	import core.*;
 	
@@ -31,6 +32,12 @@ package core {
 			// So you don't need to feel guilty about calling a static, instead of using
 			// proper dependency injection.
 			return Game.instance;
+		}
+		
+		public function setPosition(pos:b2Vec2) : Entity {
+			x = pos.x;
+			y = pos.y;
+			return this;
 		}
 	}
 }
