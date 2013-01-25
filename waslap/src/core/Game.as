@@ -25,6 +25,8 @@ package core
 			
 			trace("The game is loaded and works - Thomas Jefferson (1820)");
 			trace(" - actually, that is an assumption - Winston Churchill (1946)");
+			
+			new Assets();
 		}
 		
 		public function init() : void {
