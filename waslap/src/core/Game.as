@@ -21,7 +21,6 @@ package core
 			stage.frameRate = _fps;
 			
 			addChild(new Player());
-			
 		}
 		
 		public function enterFrame(event:Event) : void {

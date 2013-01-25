@@ -24,7 +24,13 @@ package core {
 		}
 		
 		public function render() : void {
-		
+			// Automatically called when calling "addChild" on a entity.
+		}
+
+		public function getGame() : Game {
+			// So you don't need to feel guilty about calling a static, instead of using
+			// proper dependency injection.
+			return Game.instance;
 		}
 	}
 }
