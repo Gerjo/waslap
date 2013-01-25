@@ -41,7 +41,10 @@ package core
 			_entities.addChild(_players[0]);
 			_entities.addChild(_players[1]);
 			
-			_background.addChild(new Image("test"));
+			_background.addChild(new Image("test").center());
+			
+			Audio.play("barrywhite", 0);
+			Audio.play("airport", 1);
 		}
 		
 		public function enterFrame(event:Event) : void {
