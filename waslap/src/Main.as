@@ -3,6 +3,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import core.*;
+	import ALF;
 	
 	public class Main extends Sprite {
 		private var _game:Game;
