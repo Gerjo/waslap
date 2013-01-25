@@ -14,7 +14,6 @@ package
 		private function init(e:Event = null):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			
 			_game = new Game();
 			
 			addEventListener(Event.ENTER_FRAME, _game.update);
