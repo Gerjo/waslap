@@ -2,6 +2,7 @@ package
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import core.*;
 	
 	public class Main extends Sprite {
 		private var _game:Game;
@@ -14,9 +15,10 @@ package
 		private function init(e:Event = null):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			_game = new Game();
+			addChild(_game = new Game());
+			_game.init();
 			
-			addEventListener(Event.ENTER_FRAME, _game.update);
+			addEventListener(Event.ENTER_FRAME, _game.enterFrame);
 		}
 	}
 }

@@ -1,26 +1,35 @@
-package  
+package core
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import entities.*;
 	
-	public class Game extends Sprite implements IUpdatable {
+	public class Game extends Entity {
 		public static var instance:Game; // hack hack hack!
-		private var _time:Time = new Time(0.16666666667);
+		private var _fps:int   = 60;
+		private var _time:Time = new Time(1 / _fps);
 		
 		public function Game() {
 			instance = this;
-			stage.frameRate = 60;
-			trace("The game is loaded and works.");
-			trace(" - actually, that is an assumption.");
+			// NB: don't do stuff here, use init().
+			
+			trace("The game is loaded and works - Thomas Jefferson (1820)");
+			trace(" - actually, that is an assumption - Winston Churchill (1946)");
 		}
 		
-		public function update(event:Event) : void {
+		public function init() : void {
+			stage.frameRate = _fps;
 			
-			for (var i:int = 0; i < numChildren; ++i) {
-				(getChildAt(i) as IUpdatable).update(_time);
-			}
+			addChild(new Player());
 			
-			trace("Update...");
+		}
+		
+		public function enterFrame(event:Event) : void {
+			this.update(_time);
+		}
+		
+		public override function update(time:Time) : void {
+			super.update(time);
 		}
 	}
 }

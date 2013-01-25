@@ -1,5 +1,5 @@
-package  {
+package core {
 	public interface IUpdatable {
-		public function update(time:Time) : void;
+		function update(time:Time) : void;
 	}
 }
