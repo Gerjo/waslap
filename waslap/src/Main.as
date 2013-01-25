@@ -3,26 +3,21 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
-	/**
-	 * ...
-	 * @author Gerard Meier
-	 */
-	public class Main extends Sprite 
-	{
+	public class Main extends Sprite {
+		private var _game:Game;
 		
-		public function Main():void 
-		{
+		public function Main():void {
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
-		private function init(e:Event = null):void 
-		{
-			new Game();
+		private function init(e:Event = null):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			// entry point
+			
+			
+			_game = new Game();
+			
+			addEventListener(Event.ENTER_FRAME, _game.update);
 		}
-		
 	}
-	
 }
