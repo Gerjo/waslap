@@ -36,9 +36,15 @@ package core {
 			return Game.instance;
 		}
 		
-		public function setPosition(pos:b2Vec2) : Entity {
-			x = pos.x;
-			y = pos.y;
+		public function setPosition(pos:Object, y:Number = 0) : Entity {
+			if (pos is b2Vec2) {
+				this.x = (pos as b2Vec2).x;
+				this.y = (pos as b2Vec2).y;
+			} else {
+				this.x = pos as Number;
+				this.y = y;
+			}
+			
 			return this;
 		}
 		
