@@ -7,6 +7,8 @@ package core {
 			
 		}
 		
+		[Embed(source = "..\\..\\src\\assets\\images\\menu\\fuse.png")]
+		private static const FUSE:Class;
 		
 		[Embed(source = "..\\..\\src\\assets\\images\\menu\\pulse1.png")]
 		private static const PULSE:Class;

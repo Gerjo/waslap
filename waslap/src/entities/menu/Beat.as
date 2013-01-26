@@ -15,6 +15,7 @@ package entities.menu {
 		public function Beat() {
 			addChild(masker = new Sprite());
 			
+			
 			masker.graphics.beginFill(0xffffff);
 			masker.graphics.drawRect(0, 0, 333, 87);
 			masker.graphics.endFill();
@@ -28,8 +29,7 @@ package entities.menu {
 			addChild(image = new Image("static"));
 		}
 		
-		override public function update(time:Time):void 
-		{
+		override public function update(time:Time):void {
 			super.update(time);
 			
 			// Only pulse uis animated.

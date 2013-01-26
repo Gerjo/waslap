@@ -7,6 +7,7 @@ package entities.menu {
 	public class Landing extends GameState {
 		private var noteImage:Image;
 		private var beats:Array = new Array();
+		private var fuses:Array = new Array();
 		
 		
 		public function Landing() {
@@ -15,18 +16,25 @@ package entities.menu {
 		
 		override public function init():void {
 			super.init();
-			
 			addChild(noteImage = new Image("note"));
 			
-			addChild(beats[0] = new Beat());
-			addChild(beats[1] = new Beat());
-			addChild(beats[2] = new Beat());
+			var moreOffsetX:Number = 30;
+			var moreOffsetY:Number = -30;
 			
-			
-			var offset:Number = 90;
-			for (var i:int = 0; i < beats.length; ++i) {
+			var offset:Number = 90 + moreOffsetY;
+			var offsetFuse:Number = -142 + moreOffsetY;
+			for (var i:int = 0; i < 3; ++i) {
+				addChild(fuses[i] = new Image("fuse"));
+				addChild(beats[i] = new Beat());
+				
+				beats[i].x = 50 + moreOffsetX;
 				beats[i].y = offset += 102;
-				beats[i].x = 50;
+				
+				
+				fuses[i].x = 85 + moreOffsetX;
+				fuses[i].y = offsetFuse += 102;
+				fuses[i].visible = false;
+				
 			}
 			
 			var buttons:Array = [
@@ -37,10 +45,10 @@ package entities.menu {
 					beats[0].showPulse();
 					beats[1].showStatic();
 					beats[2].showStatic();
+					fuses[0].visible = true;
 				}, function () : void {
 					beats[0].showStatic();
-					beats[1].showStatic();
-					beats[2].showStatic();
+					fuses[0].visible = false;
 				}),
 				
 				new Button("controlsbutton", "controlsbuttonpressed", "", function () : void {
@@ -49,10 +57,12 @@ package entities.menu {
 					beats[0].showStatic();
 					beats[1].showPulse();
 					beats[2].showStatic();
+					fuses[1].visible = true;
 				}, function () : void {
 					beats[0].showStatic();
 					beats[1].showStatic();
 					beats[2].showStatic();
+					fuses[1].visible = false;
 				}),
 				
 				new Button("creditsbutton", "creditsbuttonpressed", "",  function () : void {
@@ -61,10 +71,13 @@ package entities.menu {
 					beats[0].showStatic();
 					beats[1].showStatic();
 					beats[2].showPulse();
+					fuses[2].visible = true;
+					
 				}, function () : void {
 					beats[0].showStatic();
 					beats[1].showStatic();
 					beats[2].showStatic();
+					fuses[2].visible = false;
 				})
 			];
 			
