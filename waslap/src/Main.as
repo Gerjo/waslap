@@ -18,7 +18,11 @@ package
 			addChild(_game = new Game());
 			_game.init();
 			
+			//var myFuckingWorld:TestWorld = new TestWorld();
+			
 			addEventListener(Event.ENTER_FRAME, _game.enterFrame);
+			//addChild(myFuckingWorld);
+			//addEventListener(Event.ENTER_FRAME, myFuckingWorld.update);
 		}
 	}
 }
