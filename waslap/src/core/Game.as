@@ -5,6 +5,7 @@ package core
 	import flash.events.Event;
 	import entities.*;
 	import Box2D.Common.Math.b2Vec2;
+	import flash.text.TextField;
 		
 	public class Game extends Entity {
 		public static var instance:Game; // hack hack hack!
@@ -16,12 +17,12 @@ package core
 		private var _fps:int         = 60;
 		private var _time:Time       = new Time(1 / _fps);
 		private var _player:Player   = new Player();
-		
+		public var _ground:Ground	 = new Ground();
 		private var _background:Layer = new Layer();
 		private var _entities:Layer   = new Layer();
 		private var _particles:Layer  = new Layer();
 		private var _gui:Layer        = new Layer();
-		
+		private var _score:TextField;
 		public function Game() {
 			instance = this;
 			// NB: don't do stuff here, use init().
@@ -38,13 +39,16 @@ package core
 			addChild(_entities);
 			addChild(_particles);
 			addChild(_gui);
-			
+			_score = new TextField();
+			_score.x = 710;
+			_score.y = 10;
+			_gui.addChild(_score);
 			_entities.addChild(_player);
 			_player.setPosition(30, halfWindowSize.y);
 			
 			_background.addChild(new Image("test").center());
-			soundLine = new Ground();
-			_entities.addChild(soundLine);
+	
+			_entities.addChild(_ground);
 		}
 		
 		public function enterFrame(event:Event) : void {
@@ -53,6 +57,7 @@ package core
 		
 		public override function update(time:Time) : void {
 			super.update(time);
+			_score.text = "score = " +_ground.score;
 		}
 	}
 }
