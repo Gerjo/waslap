@@ -9,6 +9,7 @@ package entities {
 	
 	public class LineSegment extends Entity {
 		private var myBody:b2BodyDef = new b2BodyDef();
+		private var myBody2:b2Body;
 		private var vertices:Array;
 		
 		public var start:b2Vec2 = new b2Vec2();
@@ -24,7 +25,8 @@ package entities {
 			end.x = endX;
 			end.y = endY;
 			
-			myBody.type = b2Body.b2_staticBody; // u no move
+			myBody.type = b2Body.b2_dynamicBody; // u no move
+			myBody.position.Add
 			
 			var myCircle:b2PolygonShape = new b2PolygonShape();
 			
@@ -34,8 +36,8 @@ package entities {
 			myFixture.shape = myCircle;
 			myFixture.density = 1;
 			myFixture.friction = 0;
-			var body:b2Body = getGame().getWorld().CreateBody(myBody);
-			body.CreateFixture(myFixture);
+			myBody2 = getGame().getWorld().CreateBody(myBody);
+			myBody2.CreateFixture(myFixture);
 		}
 		
 		public function getBody():b2BodyDef {
@@ -44,20 +46,18 @@ package entities {
 		
 		override public function update(time:Time):void {
 			super.update(time);
-			x = myBody.position.x;
-			y = myBody.position.y;
+			x = myBody2.GetPosition().x;
+			y = myBody2.GetPosition().y;
 		}
 		
 		override public function render():void {
 			if (DEBUG) {
 				super.render();
-				
 				graphics.beginFill(0x600000);
 				graphics.lineStyle(10, 0xffff00);
 				graphics.moveTo(start.x, start.y);
 				graphics.lineTo(end.x, end.y);
 				graphics.endFill();
-				
 			}
 		}
 	
