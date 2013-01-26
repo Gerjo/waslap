@@ -102,8 +102,8 @@ package core
 		{
 			graphics.clear();
 			for (var i:uint = 0; i < particles.length; ++i){
-				graphics.beginFill(0x000000);
-				graphics.lineStyle(0, 0x000000);
+				graphics.beginFill(color, 0.2);
+				graphics.lineStyle(1, color);
 				graphics.drawEllipse(particles[i].position.x, particles[i].position.y, 10, 10);
 				graphics.endFill();
 			}
