@@ -22,20 +22,27 @@ package entities {
 		private function onNewFrame(e:Event):void {
 			if (_isLoaded) {
 				intensity = _audio.getIntensity();
+				
 				var xy:XY = new XY();
 				xy.x = offset;
-				xy.y = 300 - intensity / 10;
-				xy.y = (xy.y < 200)? 300 : xy.y;
+				if(Math.random() > 0.49){
+					xy.y = 300 - intensity / 20 ;
+					xy.y = (xy.y < 150)? 300 : xy.y;
+				}else {
+					xy.y = 300 + intensity / 20 ;
+					xy.y = (xy.y > 450)? 300 : xy.y;
+				}
+				
 				if (isNaN(xy.y))
 					xy.y = 300;
 				line.nodes.push(xy);
 				
-				offset += 30;
+				offset += 50;
 				if (offset > Game.instance.windowSize.x) {
-					line.x = 30;
+					line.x = 5;
 					line.moveNodes();
 				}
-				trace(line.nodes.length);	
+				trace(intensity);	
 			}
 		}
 		
@@ -78,7 +85,7 @@ class Line {
 	
 	public function render(graphics:Graphics):void {
 		graphics.clear();
-		graphics.lineStyle(1, 0x600000);
+		graphics.lineStyle(5, 0x600000);
 		
 		graphics.moveTo(nodes[0].x, nodes[0].y);
 		for (var i:int = 1; i < nodes.length; ++i) {
