@@ -91,7 +91,7 @@ package core
 			super.update(time);
 			_score.text = "score = " + _ground.score;
 
-			_world.Step(1 / _fps, 10, 10);
+			_world.Step(1 / _fps, 2, 4);
 			_world.ClearForces();
 			_world.DrawDebugData();
 		}
