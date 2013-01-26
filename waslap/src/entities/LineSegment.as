@@ -1,10 +1,12 @@
-package core {
+package entities {
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
 	import Box2D.Dynamics.b2FixtureDef;
-
+	import core.Entity;
+	import core.Time;
+	
 	public class LineSegment extends Entity {
 		private var myBody:b2BodyDef = new b2BodyDef();
 		private var vertices:Array;
@@ -30,15 +32,7 @@ package core {
 			myBody.type = b2Body.b2_staticBody; // u no move
 			
 			var myCircle:b2PolygonShape = new b2PolygonShape();
-			//myCircle.SetAsBox(600, 100);
-			
-			//myCircle.SetAsArray([
-			//	new b2Vec2(0, 0),
-			//	new b2Vec2(400, 10),
-			//	new b2Vec2(400, 100),
-			//	new b2Vec2(0, 100)
-			//]);
-			
+
 			myCircle.SetAsArray(vertices);
 			
 			var myFixture:b2FixtureDef = new b2FixtureDef();
@@ -52,7 +46,6 @@ package core {
 		public function getBody() : b2BodyDef {
 			return myBody;
 		}
-		
 		
 		override public function update(time:Time):void {
 			super.update(time);

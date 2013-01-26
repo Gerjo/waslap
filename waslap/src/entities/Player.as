@@ -2,74 +2,48 @@ package entities {
 	import Box2D.Collision.b2AABB;
 	import Box2D.Collision.b2Collision;
 	import Box2D.Collision.b2Manifold;
+	import Box2D.Collision.Shapes.b2CircleShape;
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Common.Math.b2Transform;
 	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2Body;
+	import Box2D.Dynamics.b2BodyDef;
+	import Box2D.Dynamics.b2FixtureDef;
 	import core.Entity;
+	import core.Game;
 	import core.Message;
 	import core.Time;
 	import core.IUpdatable;
 	
 	public class Player extends Entity {
 		private var _isFlipped:Boolean = false;
-		private var _gravity:b2Vec2 = new b2Vec2(0.0, 0.35);
+		private var _gravity:b2Vec2    = new b2Vec2(0.0, 0.35);
+		private var myBody:b2BodyDef   = new b2BodyDef();
+		private var myBody2:b2Body;
 		
 		public function Player() {
+			myBody.position.Set(100, 100);
+			myBody.type = b2Body.b2_dynamicBody;
+			var myCircle:b2CircleShape = new b2CircleShape(10);
+			var myFixture:b2FixtureDef = new b2FixtureDef();
+			myFixture.shape = myCircle;
+			myFixture.density = 1;
+			myFixture.friction = 1;
+			
+			myBody2 = getGame().getWorld().CreateBody(myBody);
+			myBody2.CreateFixture(myFixture);
 		}
 		
 		override public function render():void {
 			graphics.beginFill(0xff0000);
 			graphics.drawCircle(0, 0, 10);
-			graphics.drawCircle(0, -10, 3);
 			graphics.endFill();
 		}
 		
 		override public function update(time:Time):void {
-			for (var i:int = 0; i < numChildren; ++i) {
-				// Incase of 0 FPS, remove check.
-				if (getChildAt(i) is IUpdatable) {
-					(getChildAt(i) as IUpdatable).update(time);
-				}
-			}
-			
-			var difference:b2Vec2 = doCollisionStuff();
-			
-			_velocity.Add(_acceleration);
-			_acceleration = new b2Vec2(0, 0);
-			
-			_velocity.x = _velocity.x * _friction.x;
-			_velocity.y = _velocity.y * _friction.y;
-			
-			var collisionInfo:b2Vec2 = doCollisionStuff();
-			if (collisionInfo.x > 0 || collisionInfo.y > 0)
-				trace("FUCK YEAH!")
-			_velocity.Add(collisionInfo);
-			
-			this.x += _velocity.x;
-			this.y += _velocity.y;
-		}
-		
-		private function doCollisionStuff() : b2Vec2 {
-			var lineSegment:b2PolygonShape = getGame()._ground.getLine().getPolygonShape(this.x)
-			
-			var vert:Array = new Array();
-			vert.push(new b2Vec2(this.x, this.y));
-			vert.push(new b2Vec2(this.x, this.y + this.width));
-			vert.push(new b2Vec2(this.x + this.width, this.y + this.height));
-			vert.push(new b2Vec2(this.x + this.width, this.y));
-			
-			var me:b2PolygonShape = new b2PolygonShape();
-			me.SetAsArray(vert, vert.length);
-			
-			if(lineSegment.GetVertexCount() > 0) {
-			
-			var manifold:b2Manifold = new b2Manifold();
-			var diffA:b2Transform = new b2Transform();
-			var diffB:b2Transform = new b2Transform();
-			
-			b2Collision.CollidePolygons(manifold, lineSegment, diffA, me, diffB);
-			} else return new b2Vec2();
-			return diffB.position;
+			super.update(time);
+			x = myBody2.GetPosition().x;
+			y = myBody2.GetPosition().y;
 		}
 		
 		override public function handleMessage(msg:Message):void {
