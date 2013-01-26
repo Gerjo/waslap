@@ -4,6 +4,11 @@ package core {
 
 	public class Image extends Entity {
 		private var _isCentered:Boolean = false;
+		private var _name:String = "";
+		
+		public function get imageName() : String {
+			return _name;
+		}
 		
 		public function Image(name:String = "") {
 			if (name != "") {
@@ -40,6 +45,7 @@ package core {
 		}
 		
 		public function load(name:String) : Image {
+			_name       = name;
 			_isCentered = false;
 			
 			while(numChildren > 0) {
