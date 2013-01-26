@@ -13,7 +13,7 @@ package core
 		
 		private var _fps:int         = 60;
 		private var _time:Time       = new Time(1 / _fps);
-		private var _players:Array   = new Array();
+		private var _player:Player   = new Player();
 		
 		private var _background:Layer = new Layer();
 		private var _entities:Layer   = new Layer();
@@ -40,11 +40,8 @@ package core
 			addChild(_particles);
 			addChild(_gui);
 			
-			_players.push(new Player().setPosition(30, 33.141592));
-			_players.push(new Player());
-			_entities.addChild(_players[0]);
-			_entities.addChild(_players[1]);
-			
+			_entities.addChild(_player);
+			_player.setPosition(30, halfWindowSize.y);
 			
 			_background.addChild(new Image("test").center());
 			
@@ -60,12 +57,6 @@ package core
 		
 		public override function update(time:Time) : void {
 			super.update(time);
-			
-			if (_players[0].getBox().Contains(_players[1].getBox())) {
-				//("Yay");
-			} else {
-				//trace("Nay");
-			}
 		}
 	}
 }

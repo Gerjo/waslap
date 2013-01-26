@@ -18,13 +18,13 @@ package core {
 		
 		private function keyEventDown(e:KeyboardEvent) : void {
 			var msg:Message;
-			if (e.keyCode == Keyboard.SPACE) {
+			if (e.keyCode == Keyboard.X) {
 				if (_jumpKey != true) {
 					_jumpKey = true;
 					broadcastMessage(new Message("KeyboardEvent", "jump"));
 				}
 			}
-			else if (e.keyCode == Keyboard.M) {
+			else if (e.keyCode == Keyboard.Z) {
 				if (_flipKey != true) {
 					_flipKey = true;
 					broadcastMessage(new Message("KeyboardEvent", "flip"));

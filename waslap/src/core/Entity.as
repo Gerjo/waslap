@@ -6,6 +6,10 @@ package core {
 	import core.*;
 	
 	public class Entity extends Sprite implements IUpdatable, IRenderable, IMessageHandler {
+		private var _velocity:b2Vec2 		= new b2Vec2(0, 0);
+		private var _acceleration:b2Vec2 	= new b2Vec2(0, 0);
+		private var _friction:b2Vec2		= new b2Vec2(0, 0);
+		
 		public function Entity() {
 			
 		}
@@ -17,6 +21,14 @@ package core {
 					(getChildAt(i) as IUpdatable).update(time);
 				}
 			}
+			
+			_velocity.Add(_acceleration);
+			
+			_velocity.x = _velocity.x * _friction.x;
+			_velocity.y = _velocity.y * _friction.y;
+			
+			this.x += _velocity.x;
+			this.y += _velocity.y;
 		}
 		
 		override public function addChild(child:DisplayObject):DisplayObject {

@@ -6,7 +6,6 @@ package entities
 
 	public class Player extends Entity {
 		public function Player() {
-			setPosition(getGame().halfWindowSize);
 		}
 		
 		override public function render():void {
