@@ -105,6 +105,7 @@ package core
 				last = buttons[i];
 			}
 			
+			menuState.addChild(new SpriteSheet("running", 100, 100));
 		}
 		
 		public function init() : void {

@@ -6,6 +6,9 @@ package core {
 		public function Assets() {
 			
 		}
+		
+		[Embed(source = "..\\..\\src\\assets\\images\\in-game\\running.png")]
+		private static const RUNNING:Class;
 				
 		[Embed(source = "..\\..\\src\\assets\\images\\menu\\playbutton.png")]
 		private static const PLAYBUTTON:Class;
