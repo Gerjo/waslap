@@ -15,18 +15,17 @@ package core
 		
 		public var soundLine:Ground;
 		
-		private var _fps:int         = 60;
-		private var _time:Time       = new Time(1 / _fps);
-		private var _player:Player   = new Player();
-		public var _ground:Ground	 = new Ground();
+		private var _fps:int          = 60;
+		private var _time:Time        = new Time(1 / _fps);
+		private var _player:Player    = new Player();
+		public var _ground:Ground	  = new Ground();
 		private var _background:Layer = new Layer();
 		private var _entities:Layer   = new Layer();
 		private var _particles:Layer  = new Layer();
 		private var _gui:Layer        = new Layer();
 		private var _score:TextField;
 		
-		private var _world:b2World    = new b2World(new b2Vec2(0, 100), true);
-		private var bodyList:Array	  = new Array();
+		private var _world:b2World     = new b2World(new b2Vec2(0, 100), true);
 		
 		public function Game() {
 			instance = this;
@@ -54,6 +53,14 @@ package core
 			_background.addChild(new Image("test").center());
 	
 			_entities.addChild(_ground);
+			
+			// bunch of hardcoded lines. TODO: link this to alf.
+			var start:b2Vec2 = new b2Vec2(0, 0);
+			for (var i:int = 0; i < 100; ++i) {
+				var end:b2Vec2 = new b2Vec2(i * 45, Math.random() * 100);
+				_gui.addChild(new LineSegment(start.x, start.y, end.x, end.y));
+				start = end;
+			}
 		}
 		
 		public function enterFrame(event:Event) : void {
@@ -63,6 +70,18 @@ package core
 		public override function update(time:Time) : void {
 			super.update(time);
 			_score.text = "score = " +_ground.score;
+			
+			_world.Step(1 / 30, 10, 10);
+			_world.ClearForces();
+			_world.DrawDebugData();
+		}
+		
+		public function getWorld() : b2World {
+			return _world;
+		}
+		
+		public function getPlayer() : Player {
+			return _player;
 		}
 	}
 }

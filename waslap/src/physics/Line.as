@@ -63,6 +63,7 @@ package physics {
 			} else {
 				var lineSegmentElse:b2PolygonShape = new b2PolygonShape();
 				lineSegmentElse.SetAsBox(0, 0);
+
 				return lineSegmentElse;
 			}
 		}
