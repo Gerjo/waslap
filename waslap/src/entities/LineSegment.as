@@ -26,8 +26,7 @@ package entities {
 			end.y = endY;
 			
 			myBody.type = b2Body.b2_dynamicBody; // u no move
-			myBody.position.Add
-			
+
 			var myCircle:b2PolygonShape = new b2PolygonShape();
 			
 			myCircle.SetAsArray(vertices);
