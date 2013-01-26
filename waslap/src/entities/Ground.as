@@ -3,6 +3,7 @@ package entities {
 	import flash.display.LineScaleMode;
 	import flash.events.Event;
 	import flash.display.Graphics;
+	import physics.XY;
 	
 	import core.*;
 	
@@ -37,14 +38,25 @@ package entities {
 		private function onNewFrame(e:Event):void {
 			if (_isLoaded) {
 				var intensity:Number = audio.getIntensity();
-				if (isNaN(intensity)) intensity = 0;
+				
+				
+				var xy:XY = new XY();
+				xy.x = _offset;
+				xy.y = 300 - intensity / 20 ;
 				if (segments.length >= 1)
 					preEnd = segments[segments.length - 1].start.Copy();
 				//if (preEnd == null) preEnd = new b2Vec2(800, 300);
-				var ls:LineSegment = new LineSegment(preEnd.x, preEnd.y, 800 - _offset, 300 + intensity * 0.05);
 				
+				if (isNaN(xy.y)) xy.y = 300;
+				nodes.push(xy);
+				var index:int = nodes.length;
+				if (nodes.length > 1) {
+					var ls:LineSegment = new LineSegment(nodes[index - 2].x, nodes[index - 2].y, nodes[index - 1].x, nodes[index - 1].y);
+					
 				addChild(ls);
 				segments.push(ls);
+				}
+				_offset += 30;
 			}
 		}
 		
