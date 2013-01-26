@@ -5,12 +5,15 @@ package entities
 	import core.Time;
 
 	public class Player extends Entity {
+		private var _isFlipped:Boolean = false;
+		
 		public function Player() {
 		}
 		
 		override public function render():void {
 			graphics.beginFill(0xff0000);
 			graphics.drawCircle(0, 0, 10);
+			graphics.drawCircle(0, 10, 3);
 			graphics.endFill();
 		}
 		
@@ -35,7 +38,15 @@ package entities
 		}
 		
 		public function flip() : void {
-			trace("TODO: Flipping");
+			if (!_isFlipped) {
+				this.y -= this.height;
+				this.scaleY *= -1;
+			} else {
+				this.y += this.height;
+				this.scaleY *= -1;
+			}
+			
+			_isFlipped = _isFlipped ? false : true;
 		}
 	}
 }

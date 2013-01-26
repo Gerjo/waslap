@@ -33,11 +33,11 @@ package core {
 		}
 		
 		private function keyEventUp(e:KeyboardEvent) : void {
-			if (e.keyCode == Keyboard.SPACE) {
+			if (e.keyCode == Keyboard.X) {
 				if (_jumpKey != false)
 					_jumpKey = false;
 			}
-			else if (e.keyCode == Keyboard.M) {
+			else if (e.keyCode == Keyboard.Z) {
 				if (_flipKey != false)
 					_flipKey = false;
 			}
