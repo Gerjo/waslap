@@ -13,6 +13,7 @@ package entities {
 	import core.Entity;
 	import core.Game;
 	import core.Message;
+	import core.SpriteSheet;
 	import core.Time;
 	import core.IUpdatable;
 	
@@ -39,6 +40,8 @@ package entities {
 			myBody2 = getGame().getWorld().CreateBody(myBody);
 			myBody2.SetMassData(myMass);
 			myBody2.CreateFixture(myFixture);
+			
+			addChild(new SpriteSheet("running", 100, 100).center().top(-75));
 		}
 		
 		override public function render():void {

@@ -104,8 +104,6 @@ package core
 				Button.AlignUnder(last, buttons[i]);
 				last = buttons[i];
 			}
-			
-			menuState.addChild(new SpriteSheet("running", 100, 100));
 		}
 		
 		public function init() : void {
