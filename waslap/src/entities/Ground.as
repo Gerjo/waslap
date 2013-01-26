@@ -1,6 +1,7 @@
 package entities {
 	import Box2D.Common.Math.b2Vec2;
 	import flash.events.Event;
+	import physics.Line;
 	
 	import core.*;
 	
