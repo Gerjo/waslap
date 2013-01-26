@@ -64,7 +64,7 @@ package entities {
 			var diffB:b2Transform = new b2Transform();
 			b2Collision.CollidePolygons(manifold, lineSegment, diffA, me, diffB);
 			
-			return diffB;
+			return diffB.position;
 		}
 		
 		override public function handleMessage(msg:Message):void {
