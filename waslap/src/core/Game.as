@@ -75,7 +75,7 @@ package core
 			super.update(time);
 			_score.text = "score = " +_ground.score;
 			
-			for (var body:b2Body in _bodies) {
+			for each (var body:b2Body in _bodies) {
 				body.SetAwake(true);
 			}
 			
@@ -92,7 +92,7 @@ package core
 			return _player;
 		}
 		
-		public function addBody(body:b2Body : void {
+		public function addBody(body:b2Body) : void {
 			_bodies.push(body);
 		}
 	}
