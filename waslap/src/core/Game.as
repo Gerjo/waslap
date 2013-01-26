@@ -88,7 +88,7 @@ package core
 		
 		public override function update(time:Time) : void {
 			super.update(time);
-			_score.text = "score = " +_ground.score;
+			_score.text = "score = " + _ground.score;
 
 			_world.Step(1 / 30, 10, 10);
 			_world.ClearForces();

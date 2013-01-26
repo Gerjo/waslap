@@ -58,15 +58,19 @@ package entities {
 		}
 		
 		public function jump():void {
-			if (_isJumping)
+			if (_isJumping) {
 				return;
+			}
+			
 			if (!_isFlipped) {
 				myBody2.ApplyImpulse(new b2Vec2(0, -100), new b2Vec2(0, 100));
 			}
 			else {
 				myBody2.ApplyImpulse(new b2Vec2(0, 100), new b2Vec2(0, -100))
 			}
-			_isJumping = true;
+			
+			
+			_isJumping = false;
 		}
 		
 		public function flip():void {
