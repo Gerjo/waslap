@@ -44,6 +44,12 @@ package entities {
 			return myBody;
 		}
 		
+		public function addLeftOffset(num:Number) : void {
+			var pos:b2Vec2 = myBody2.GetPosition();
+			pos.x += num;
+			myBody2.SetPosition(pos);
+		}
+		
 		override public function update(time:Time):void {
 			super.update(time);
 			x = myBody2.GetPosition().x;
