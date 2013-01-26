@@ -17,7 +17,8 @@ package entities {
 	
 	public class Player extends Entity {
 		private var _isFlipped:Boolean = false;
-		private var _gravity:b2Vec2    = new b2Vec2(0.0, 0.35);
+		private var _isJumping:Boolean = false;
+
 		private var myBody:b2BodyDef   = new b2BodyDef();
 		private var myBody2:b2Body;
 		
@@ -27,8 +28,8 @@ package entities {
 			var myCircle:b2CircleShape = new b2CircleShape(10);
 			var myFixture:b2FixtureDef = new b2FixtureDef();
 			myFixture.shape = myCircle;
-			myFixture.density = 1;
-			myFixture.friction = 1;
+			myFixture.density = 0.1;
+			myFixture.friction = 0.75;
 			
 			myBody2 = getGame().getWorld().CreateBody(myBody);
 			myBody2.CreateFixture(myFixture);
@@ -57,7 +58,15 @@ package entities {
 		}
 		
 		public function jump():void {
-			_isFlipped ? _acceleration.y = 10 : _acceleration.y = -10;
+			if (_isJumping)
+				return;
+			if (!_isFlipped) {
+				myBody2.ApplyImpulse(new b2Vec2(0, -100), new b2Vec2(0, 100));
+			}
+			else {
+				myBody2.ApplyImpulse(new b2Vec2(0, 100), new b2Vec2(0, -100))
+			}
+			_isJumping = true;
 		}
 		
 		public function flip():void {

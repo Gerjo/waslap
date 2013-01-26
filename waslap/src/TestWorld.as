@@ -11,7 +11,7 @@ package {
 	
 	public class TestWorld extends Sprite {
 		public var worldScale:Number 	= 1;
-		public var world:b2World		= new b2World(new b2Vec2(0, 100), true);
+		public var world:b2World		= new b2World(new b2Vec2(0, 10), true);
 		
 		public function TestWorld() {
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
