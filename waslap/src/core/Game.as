@@ -51,7 +51,7 @@ package core
 			_score.x = 710;
 			_score.y = 10;
 			
-			_particles.addChild(new ParticleEmitter(new b2Vec2(1,1)));
+			_particles.addChild(new ParticleEmitter(new b2Vec2(1,1), 10, 0xffffff, 0.3));
 			_background.addChild(new Image("background"));
 			_entities.addChild(_ground = new Ground());
 			_gui.addChild(new FrameCounter());
