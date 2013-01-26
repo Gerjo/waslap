@@ -21,15 +21,6 @@ package core {
 					(getChildAt(i) as IUpdatable).update(time);
 				}
 			}
-			
-			_velocity.Add(_acceleration);
-			_acceleration = new b2Vec2(0, 0);
-			
-			_velocity.x = _velocity.x * _friction.x;
-			_velocity.y = _velocity.y * _friction.y;
-			
-			this.x += _velocity.x;
-			this.y += _velocity.y;
 		}
 		
 		override public function addChild(child:DisplayObject):DisplayObject {

@@ -1,5 +1,6 @@
 package core
 {
+	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2World;
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
@@ -17,7 +18,7 @@ package core
 		
 		private var _fps:int          = 60;
 		private var _time:Time        = new Time(1 / _fps);
-		private var _player:Player    = new Player();
+		private var _player:Player;
 		public var _ground:Ground	  = new Ground();
 		private var _background:Layer = new Layer();
 		private var _entities:Layer   = new Layer();
@@ -25,7 +26,8 @@ package core
 		private var _gui:Layer        = new Layer();
 		private var _score:TextField;
 		
-		private var _world:b2World     = new b2World(new b2Vec2(0, 100), true);
+		private var _world:b2World    = new b2World(new b2Vec2(0, 100), false);
+		private var _bodies:Array     = [];
 		
 		public function Game() {
 			instance = this;
@@ -47,8 +49,7 @@ package core
 			_score.x = 710;
 			_score.y = 10;
 			_gui.addChild(_score);
-			_entities.addChild(_player);
-			_player.setPosition(30, halfWindowSize.y);
+			
 			
 			_background.addChild(new Image("test").center());
 	
@@ -61,6 +62,9 @@ package core
 				_gui.addChild(new LineSegment(start.x, start.y, end.x, end.y));
 				start = end;
 			}
+			
+			// Le player, because that's not obvious, ehhh?
+			_entities.addChild(_player = new Player());
 		}
 		
 		public function enterFrame(event:Event) : void {
@@ -70,6 +74,10 @@ package core
 		public override function update(time:Time) : void {
 			super.update(time);
 			_score.text = "score = " +_ground.score;
+			
+			for (var body:b2Body in _bodies) {
+				body.SetAwake(true);
+			}
 			
 			_world.Step(1 / 30, 10, 10);
 			_world.ClearForces();
@@ -82,6 +90,10 @@ package core
 		
 		public function getPlayer() : Player {
 			return _player;
+		}
+		
+		public function addBody(body:b2Body : void {
+			_bodies.push(body);
 		}
 	}
 }

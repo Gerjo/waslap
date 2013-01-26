@@ -59,7 +59,6 @@ package entities {
 		}
 		
 		public override function update(time:Time):void {
-			
 			render();
 		}
 		
