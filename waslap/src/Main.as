@@ -15,14 +15,14 @@ package
 		private function init(e:Event = null):void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			//addChild(_game = new Game());
-			//_game.init();
+			addChild(_game = new Game());
+			_game.init();
 			
-			var myFuckingWorld:TestWorld = new TestWorld();
+			//var myFuckingWorld:TestWorld = new TestWorld();
 			
-			//addEventListener(Event.ENTER_FRAME, _game.enterFrame);
-			addChild(myFuckingWorld);
-			addEventListener(Event.ENTER_FRAME, myFuckingWorld.update);
+			addEventListener(Event.ENTER_FRAME, _game.enterFrame);
+			//addChild(myFuckingWorld);
+			//addEventListener(Event.ENTER_FRAME, myFuckingWorld.update);
 		}
 	}
 }

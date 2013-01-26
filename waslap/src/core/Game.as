@@ -1,5 +1,6 @@
 package core
 {
+	import Box2D.Dynamics.b2World;
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -24,6 +25,8 @@ package core
 		private var _gui:Layer        = new Layer();
 		private var _score:TextField;
 		
+		private var _world:b2World    = new b2World(new b2Vec2(0, 100), true);
+		private var bodyList:Array	  = new Array();
 		
 		public function Game() {
 			instance = this;
