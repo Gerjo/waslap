@@ -50,6 +50,7 @@ package core
 			_score.x = 710;
 			_score.y = 10;
 			_gui.addChild(_score);
+			_gui.addChild(new FrameCounter());
 			
 			_particles.addChild(new ParticleEmitter(new b2Vec2(1,1)));
 			
