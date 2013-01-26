@@ -44,7 +44,7 @@ package entities {
 					line.x = 5;
 					line.moveNodes();
 				}
-				if (line.distance % 100 == 0) {
+				if (line.distance >= 100 && line.distance % 100 == 0) {
 					score++;
 				}
 			}
