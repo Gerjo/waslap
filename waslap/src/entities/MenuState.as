@@ -3,11 +3,13 @@ package entities {
 	import core.Image;
 
 	public class MenuState extends GameState {
+		
+		
 		public function MenuState() {
 			
 		}
 		
-		public function init() : void {
+		public override function init() : void {
 			addChild(new Image("background"));
 			addChild(new FrameCounter());
 			

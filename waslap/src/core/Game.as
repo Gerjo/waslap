@@ -73,20 +73,13 @@ package core
 			debugDraw();
 		}
 		
-		private function loadMenuState() : void {
-			addChild(menuState = new MenuState());
-			menuState.init();
-			
-			
-		}
-		
-		public function init() : void {
+		public override function init() : void {
 			stage.frameRate = _fps;
 			stage.focus 	= this;
 			
-			
 			loadGameState();
-			loadMenuState();
+			
+			addChild(menuState = new MenuState());
 		}
 		
 		public function enterFrame(event:Event) : void {
@@ -107,7 +100,7 @@ package core
 		public override function update(time:Time) : void {
 			super.update(time);
 			_score.text = "score = " + _ground.score;
-
+			
 			_world.Step(1 / _fps, 2, 4);
 			_world.ClearForces();
 			_world.DrawDebugData();
