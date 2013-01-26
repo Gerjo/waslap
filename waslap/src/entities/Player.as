@@ -19,6 +19,7 @@ package entities {
 		private var _isFlipped:Boolean = false;
 		private var _gravity:b2Vec2    = new b2Vec2(0.0, 0.35);
 		private var myBody:b2BodyDef   = new b2BodyDef();
+		private var myBody2:b2Body;
 		
 		public function Player() {
 			myBody.position.Set(100, 100);
@@ -29,24 +30,20 @@ package entities {
 			myFixture.density = 1;
 			myFixture.friction = 1;
 			
-			var body:b2Body = getGame().getWorld().CreateBody(myBody);
-			body.CreateFixture(myFixture);
-			
+			myBody2 = getGame().getWorld().CreateBody(myBody);
+			myBody2.CreateFixture(myFixture);
 		}
 		
 		override public function render():void {
 			graphics.beginFill(0xff0000);
 			graphics.drawCircle(0, 0, 10);
-			//graphics.drawCircle(0, -10, 3);
 			graphics.endFill();
 		}
 		
 		override public function update(time:Time):void {
 			super.update(time);
-			x = myBody.position.x;
-			y = myBody.position.y;
-			
-			trace("player pos: ", x, " ", y);
+			x = myBody2.GetPosition().x;
+			y = myBody2.GetPosition().y;
 		}
 		
 		override public function handleMessage(msg:Message):void {

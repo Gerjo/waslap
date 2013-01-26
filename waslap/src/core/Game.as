@@ -1,6 +1,7 @@
 package core
 {
 	import Box2D.Dynamics.b2Body;
+	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2World;
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
@@ -27,7 +28,7 @@ package core
 		private var _score:TextField;
 		
 		private var _world:b2World    = new b2World(new b2Vec2(0, 100), false);
-		private var _bodies:Array     = [];
+
 		
 		public function Game() {
 			instance = this;
@@ -65,20 +66,29 @@ package core
 			
 			// Le player, because that's not obvious, ehhh?
 			_entities.addChild(_player = new Player());
+			
+			debugDraw();
 		}
 		
 		public function enterFrame(event:Event) : void {
 			this.update(_time);
 		}
 		
+		public function debugDraw() : void {
+			return; // Enable for debug stuff.
+			var debugDraw:b2DebugDraw = new b2DebugDraw();
+			var debugSprite:Sprite = new Sprite();
+			addChild(debugSprite);
+			debugDraw.SetSprite(debugSprite);
+			debugDraw.SetDrawScale(1);
+			debugDraw.SetFlags(b2DebugDraw.e_shapeBit);
+			_world.SetDebugDraw(debugDraw);
+		}
+		
 		public override function update(time:Time) : void {
 			super.update(time);
 			_score.text = "score = " +_ground.score;
-			
-			for each (var body:b2Body in _bodies) {
-				body.SetAwake(true);
-			}
-			
+
 			_world.Step(1 / 30, 10, 10);
 			_world.ClearForces();
 			_world.DrawDebugData();
@@ -90,10 +100,6 @@ package core
 		
 		public function getPlayer() : Player {
 			return _player;
-		}
-		
-		public function addBody(body:b2Body) : void {
-			_bodies.push(body);
 		}
 	}
 }
