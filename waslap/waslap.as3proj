@@ -17,7 +17,6 @@
   <classpaths>
     <class path="src" />
     <class path="lib" />
-    <class path="lib\alf\alf-read-only\Flash" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -52,7 +51,7 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <element path="lib\alf\alf-read-only\ALFPackage.swc" />
+    <!-- example: <element path="..." /> -->
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
@@ -84,7 +83,7 @@
   <postBuildCommand alwaysRun="False" />
   <!-- Other project options -->
   <options>
-    <option showHiddenPaths="True" />
+    <option showHiddenPaths="False" />
     <option testMovie="Default" />
   </options>
   <!-- Plugin storage -->

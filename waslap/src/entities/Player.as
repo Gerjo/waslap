@@ -33,7 +33,7 @@ package entities {
 			_velocity.x = _velocity.x * _friction.x;
 			_velocity.y = _velocity.y * _friction.y;
 			
-			if (!_isFlipped && this.y < getGame().halfWindowSize.y) // should become a ground check.
+			if (!_isFlipped && this.y < getGame().halfWindowSize.y) 	// should become a ground check.
 				_velocity.Add(_gravity);
 			
 			else if (_isFlipped && this.y > getGame().halfWindowSize.y) // should become a ground check.
