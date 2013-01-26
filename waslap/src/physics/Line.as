@@ -8,6 +8,8 @@ package physics {
 	public class Line {
 		
 		public var nodes:Array;
+		public var distance:Number = 0;
+		
 		public var x:Number = 0, y:Number;
 		
 		public function Line() {
@@ -26,7 +28,6 @@ package physics {
 			for (var i:int = 1; i < nodes.length; ++i) {
 				graphics.lineTo(nodes[i].x, nodes[i].y);
 			}
-			
 			graphics.endFill();
 		}
 		
@@ -34,6 +35,7 @@ package physics {
 			for (var i:int = 1; i < nodes.length; ++i) {
 				nodes[i].x -= x;
 			}
+			distance += 5;
 		}
 		
 		public function remove(nodesToRemove:int):void {
