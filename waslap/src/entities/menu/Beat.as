@@ -9,7 +9,8 @@ package entities.menu {
 		private var image:Image;
 		private var speed:Number = 5;
 		private var magicNumber:Number = 333;
-		//private var 
+		private var animationSpeed = 0.01;
+		private var _animationCounter = 0;
 		
 		public function Beat() {
 			addChild(masker = new Sprite());
@@ -36,12 +37,17 @@ package entities.menu {
 				return;
 			}
 			
-			image.x -= speed;
+			_animationCounter += time.delta;
 			
-			if (image.x < -1 * (image.width - magicNumber)) {
-				image.x = -magicNumber;
+			if (_animationCounter > animationSpeed) {
+				_animationCounter = 0;
+				
+				image.x -= speed;
+			
+				if (image.x < -1 * (image.width - magicNumber)) {
+					image.x = -magicNumber;
+				}
 			}
-			// magicNumber
 		}
 		
 		public function showPulse() : void {
