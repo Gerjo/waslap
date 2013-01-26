@@ -1,4 +1,5 @@
 package physics {
+	import flash.display.Graphics;
 	
 	/**
 	 * ...
