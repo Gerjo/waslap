@@ -46,7 +46,7 @@ package core {
 				removeChildAt(0);
 			}
 			
-			addChild(Assets.load("test"));
+			addChild(Assets.load(name));
 			return this;
 		}
 	}
