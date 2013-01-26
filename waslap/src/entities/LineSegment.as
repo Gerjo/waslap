@@ -11,28 +11,23 @@ package entities {
 		private var myBody:b2BodyDef = new b2BodyDef();
 		private var vertices:Array;
 		
-		private var start:b2Vec2 = new b2Vec2();
-		private var end:b2Vec2   = new b2Vec2();
+		public var start:b2Vec2 = new b2Vec2();
+		public var end:b2Vec2 = new b2Vec2();
+		public static var DEBUG:Boolean = true;
 		
 		public function LineSegment(startX:Number, startY:Number, endX:Number, endY:Number) {
-			vertices = [
-				new b2Vec2(startX, startY),
-				new b2Vec2(endX, endY),
-				new b2Vec2(endX + 10, endY + 10),
-				new b2Vec2(startX + 10, startY + 10)
-			];
+			vertices = [new b2Vec2(startX, startY), new b2Vec2(endX, endY), new b2Vec2(endX + 10, endY + 10), new b2Vec2(startX + 10, startY + 10)];
 			
 			start.x = startX;
 			start.y = startY;
 			
 			end.x = endX;
 			end.y = endY;
-		
-			myBody.position.Set(10, 200);
-			myBody.type = b2Body.b2_staticBody; // u no move
+			
+			myBody.type = b2Body.b2_dynamicBody; // u no move
 			
 			var myCircle:b2PolygonShape = new b2PolygonShape();
-
+			
 			myCircle.SetAsArray(vertices);
 			
 			var myFixture:b2FixtureDef = new b2FixtureDef();
@@ -43,7 +38,7 @@ package entities {
 			body.CreateFixture(myFixture);
 		}
 		
-		public function getBody() : b2BodyDef {
+		public function getBody():b2BodyDef {
 			return myBody;
 		}
 		
@@ -53,15 +48,18 @@ package entities {
 			y = myBody.position.y;
 		}
 		
-		override public function render() : void {
-			super.render();
-			
-			graphics.beginFill(0x600000);
-			graphics.lineStyle(10, 0xffff00);
-			graphics.moveTo(start.x, start.y);
-			graphics.lineTo(end.x, end.y);
-			graphics.endFill();
+		override public function render():void {
+			if (DEBUG) {
+				super.render();
+				
+				graphics.beginFill(0x600000);
+				graphics.lineStyle(10, 0xffff00);
+				graphics.moveTo(start.x, start.y);
+				graphics.lineTo(end.x, end.y);
+				graphics.endFill();
+				
+			}
 		}
-		
+	
 	}
 }

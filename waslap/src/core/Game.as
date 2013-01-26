@@ -57,12 +57,6 @@ package core
 			_entities.addChild(_ground);
 			
 			// bunch of hardcoded lines. TODO: link this to alf.
-			var start:b2Vec2 = new b2Vec2(0, 0);
-			for (var i:int = 0; i < 100; ++i) {
-				var end:b2Vec2 = new b2Vec2(i * 45, Math.random() * 100);
-				_gui.addChild(new LineSegment(start.x, start.y, end.x, end.y));
-				start = end;
-			}
 			
 			// Le player, because that's not obvious, ehhh?
 			_entities.addChild(_player = new Player());

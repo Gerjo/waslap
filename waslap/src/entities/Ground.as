@@ -8,7 +8,6 @@ package entities {
 	
 	public class Ground extends Entity {
 		
-		private var nodes:Array = new Array();
 		private var _isLoaded:Boolean = false;
 		private var _audio:ALF;
 		private var intensity:Number = 0;
@@ -36,11 +35,6 @@ package entities {
 				flux = _audio.getFlux();
 				var xy:XY = genXY(intensity, lineIntens.y);
 				lineIntens = genLine(xy,lineIntens);
-				xy = genXY(brightness, lineBright.y);
-				lineBright = genLine(xy, lineBright);
-				xy = genXY(flux, lineFlux.y);
-				lineFlux = genLine(xy, lineFlux);
-				
 			}
 		}
 		
@@ -61,7 +55,12 @@ package entities {
 			if (isNaN(xy.y))
 					xy.y = val.y;
 				retval.nodes.push(xy);
-				
+				var nodes:Array = retval.nodes;
+				if (nodes.length > 1) {
+					var ls:LineSegment = new LineSegment(nodes[nodes.length - 1].x, nodes[nodes.length - 1].y, nodes[nodes.length - 2].x, nodes[nodes.length - 2].y);
+					retval.segments.push(ls);
+					addChild(ls);
+				}
 				offset += 10;
 				if (offset > Game.instance.windowSize.x) {
 					retval.x = 5;
@@ -88,8 +87,6 @@ package entities {
 			if (_isLoaded) {
 				graphics.clear();
 				lineIntens.render(graphics, 0x0000FF);
-				lineFlux.render(graphics,0x00FF00);
-				lineBright.render(graphics,0xFF0000);
 			}
 		}
 	}

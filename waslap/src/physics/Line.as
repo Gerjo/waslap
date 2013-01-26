@@ -7,12 +7,14 @@ package physics {
 	public class Line {
 		
 		public var nodes:Array;
+		public var segments:Array;
 		public var distance:Number = 0;
 		//public var chain:b2EdgeShape;
 		public var x:Number = 0, y:Number;
 		
 		public function Line(x:Number = 10, y:Number=300) {
 			nodes = new Array();
+			segments = new Array();
 			this.x = x; this.y = y;
 		}
 		
@@ -35,11 +37,17 @@ package physics {
 			for (var i:int = 1; i < nodes.length; ++i) {
 				nodes[i].x -= x;
 			}
+			for (var j:int = 0; j < segments.length; ++j) {
+				segments[j].start.x -= x;
+				segments[j].end.x -= x;
+			}
 			distance += 5;
 		}
 		
 		public function remove(nodesToRemove:int):void {
 			nodes.splice(0, nodesToRemove);
+			if (nodesToRemove % 2) segments.splice(0, nodesToRemove);
+			else segments.splice(0, nodesToRemove-1);
 		}
 	
 	}
