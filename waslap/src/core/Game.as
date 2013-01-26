@@ -27,7 +27,7 @@ package core
 		private var _gui:Layer        = new Layer();
 		private var _score:TextField;
 		
-		private var _world:b2World    = new b2World(new b2Vec2(0, 9.81), false);
+		private var _world:b2World    = new b2World(new b2Vec2(0, 100), false);
 
 		
 		public function Game() {
@@ -50,10 +50,11 @@ package core
 			_score.x = 710;
 			_score.y = 10;
 			_gui.addChild(_score);
+			_gui.addChild(new FrameCounter());
 			
 			_particles.addChild(new ParticleEmitter(new b2Vec2(1,1)));
 			
-			_background.addChild(new Image("test").center());
+			_background.addChild(new Image("background"));
 	
 			_entities.addChild(_ground);
 			
@@ -90,7 +91,7 @@ package core
 			super.update(time);
 			_score.text = "score = " + _ground.score;
 
-			_world.Step(1 / 30, 10, 10);
+			_world.Step(1 / _fps, 10, 10);
 			_world.ClearForces();
 			_world.DrawDebugData();
 		}
