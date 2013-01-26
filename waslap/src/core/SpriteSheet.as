@@ -6,6 +6,10 @@ package core  {
 		private var image:Image;
 		private var clipping:b2Vec2;
 		private var masker:Sprite;
+		private var _deltaCounter:Number = 0;
+		
+		// Default speed:
+		private var _speed:Number = 0.02;
 		
 		public function SpriteSheet(name:String, width:Number, height:Number) {
 			addChild(image = new Image(name));
@@ -22,11 +26,22 @@ package core  {
 		public override function update(time:Time):void {
 			super.update(time);
 			
-			image.x -= clipping.x;
+			_deltaCounter += time.delta;
 			
-			if (image.x < -1 * (image.width - clipping.x)) {
-				image.x = 0;
+			// Accumulate deltas until the threshold is reached.
+			if (_deltaCounter > _speed) {
+				image.x -= clipping.x;
+			
+				if (image.x < -1 * (image.width - clipping.x)) {
+					image.x = 0;
+				}
+				
+				_deltaCounter = 0;
 			}
+		}
+		
+		private function setSpeed(speed:Number) : void {
+			_speed = speed;
 		}
 	}
 }
