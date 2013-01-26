@@ -2,7 +2,7 @@ package core {
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 
-	public class Image extends Sprite implements IRenderable {
+	public class Image extends Entity {
 		private var _isCentered:Boolean = false;
 		
 		public function Image(name:String = "") {
@@ -11,7 +11,7 @@ package core {
 			}
 		}
 		
-		public function render() : void {
+		public override function render() : void {
 			
 		}
 		

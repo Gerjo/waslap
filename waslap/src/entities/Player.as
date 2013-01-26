@@ -3,6 +3,7 @@ package entities {
 	import Box2D.Collision.b2Collision;
 	import Box2D.Collision.b2Manifold;
 	import Box2D.Collision.Shapes.b2CircleShape;
+	import Box2D.Collision.Shapes.b2MassData;
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Common.Math.b2Transform;
 	import Box2D.Common.Math.b2Vec2;
@@ -18,8 +19,9 @@ package entities {
 	public class Player extends Entity {
 		private var _isFlipped:Boolean = false;
 		private var _isJumping:Boolean = false;
-
-		private var myBody:b2BodyDef   = new b2BodyDef();
+		private var _onGround:Boolean = false;
+		
+		private var myBody:b2BodyDef = new b2BodyDef();
 		private var myBody2:b2Body;
 		
 		public function Player() {
@@ -27,11 +29,15 @@ package entities {
 			myBody.type = b2Body.b2_dynamicBody;
 			var myCircle:b2CircleShape = new b2CircleShape(10);
 			var myFixture:b2FixtureDef = new b2FixtureDef();
+			var myMass:b2MassData = new b2MassData();
+			myMass.mass = 0.00000002;
+			
 			myFixture.shape = myCircle;
-			myFixture.density = 0.1;
-			myFixture.friction = 0.75;
+			myFixture.density = 1;
+			myFixture.friction = 0.91;
 			
 			myBody2 = getGame().getWorld().CreateBody(myBody);
+			myBody2.SetMassData(myMass);
 			myBody2.CreateFixture(myFixture);
 		}
 		
@@ -45,15 +51,23 @@ package entities {
 			super.update(time);
 			x = myBody2.GetPosition().x;
 			y = myBody2.GetPosition().y;
+			
+			if (myBody2.GetContactList() != null)
+				_onGround = true;
+			else
+				_onGround = false;
+		
 		}
 		
 		override public function handleMessage(msg:Message):void {
 			super.handleMessage(msg);
 			
 			if (msg.type == "KeyboardEvent" && msg.payload == "jump") {
-				jump();
+				if (_onGround)
+					jump();
 			} else if (msg.type == "KeyboardEvent" && msg.payload == "flip") {
-				flip();
+				if (_onGround)
+					flip();
 			}
 		}
 		
@@ -63,12 +77,10 @@ package entities {
 			}
 			
 			if (!_isFlipped) {
-				myBody2.ApplyImpulse(new b2Vec2(0, -100), new b2Vec2(0, 100));
+				myBody2.ApplyForce(new b2Vec2(0, -3000000), myBody2.GetWorldCenter());
+			} else {
+				myBody2.ApplyForce(new b2Vec2(0, 3000000), myBody2.GetWorldCenter());
 			}
-			else {
-				myBody2.ApplyImpulse(new b2Vec2(0, 100), new b2Vec2(0, -100))
-			}
-			
 			
 			_isJumping = false;
 		}
