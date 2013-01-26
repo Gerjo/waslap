@@ -19,8 +19,9 @@ package entities {
 	public class Player extends Entity {
 		private var _isFlipped:Boolean = false;
 		private var _isJumping:Boolean = false;
-
-		private var myBody:b2BodyDef   = new b2BodyDef();
+		private var _onGround:Boolean = false;
+		
+		private var myBody:b2BodyDef = new b2BodyDef();
 		private var myBody2:b2Body;
 		
 		public function Player() {
@@ -50,15 +51,23 @@ package entities {
 			super.update(time);
 			x = myBody2.GetPosition().x;
 			y = myBody2.GetPosition().y;
+			
+			if (myBody2.GetContactList() != null)
+				_onGround = true;
+			else
+				_onGround = false;
+		
 		}
 		
 		override public function handleMessage(msg:Message):void {
 			super.handleMessage(msg);
 			
 			if (msg.type == "KeyboardEvent" && msg.payload == "jump") {
-				jump();
+				if (_onGround)
+					jump();
 			} else if (msg.type == "KeyboardEvent" && msg.payload == "flip") {
-				flip();
+				if (_onGround)
+					flip();
 			}
 		}
 		
@@ -68,10 +77,9 @@ package entities {
 			}
 			
 			if (!_isFlipped) {
-				myBody2.ApplyImpulse(new b2Vec2(0, -3000000), myBody2.GetWorldCenter());
-			}
-			else {
-				myBody2.ApplyImpulse(new b2Vec2(0, 3000000), myBody2.GetWorldCenter());
+				myBody2.ApplyForce(new b2Vec2(0, -3000000), myBody2.GetWorldCenter());
+			} else {
+				myBody2.ApplyForce(new b2Vec2(0, 3000000), myBody2.GetWorldCenter());
 			}
 			
 			_isJumping = false;
