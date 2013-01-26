@@ -53,7 +53,7 @@ package core
 			
 			_particles.addChild(new ParticleEmitter(new b2Vec2(1,1)));
 			
-			_background.addChild(new Image("test").center());
+			_background.addChild(new Image("background"));
 	
 			_entities.addChild(_ground);
 			
