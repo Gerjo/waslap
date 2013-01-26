@@ -25,10 +25,10 @@ package core
 		public var color:uint;
 		public var randomnessHalf:Number;
 		public var particle:Particle;
-		//public var position:b2Vec2;
-		//public var velocity:b2Vec2
+		private var direction:b2Vec2;
+
 		
-		public function ParticleEmitter(count:uint = 500, color:uint = 0x000000, lifetime:Number = 1.5, totalLifetime:Number = -1.0, speed:Number = 5.0, scale:Number = 0.0 - 0.05, density:Number = 0.015, direction:b2Vec2 = new b2Vec2, randomness:int = 200)
+		public function ParticleEmitter(direction:b2Vec2, count:uint = 10, color:uint = 0x000000, lifetime:Number = 0.5, totalLifetime:Number = -1.0, speed:Number = 10.0, scale:Number = 0.0 - 0.05, density:Number = 0.015, randomness:int = 200)
 		{
 			this.count = count;
 			this.scale = scale;
@@ -43,7 +43,8 @@ package core
 			this.randomness = randomness + 1;
 			this.randomnessHalf = this.randomness / 2.0;
 			particles = new Array();
-		
+			
+			direction.Normalize();
 		}
 		
 		override public function update(time:Time):void
@@ -52,7 +53,7 @@ package core
 			super.update(time);
 			this.currentdensity -= time.delta;
 			currentLifetime += time.delta;
-			trace(particles.length);
+			
 			for (var i:uint = 0; i < particles.length; ++i)
 			{
 				//trace('dit');
@@ -65,18 +66,24 @@ package core
 					//continue;
 				}
 				
-				//trace("hoi" );
-				var random:b2Vec2 = new b2Vec2(Math.random() * 10 -5, Math.random() * 10 -5);
+				var random:b2Vec2 = new b2Vec2(
+					Math.random() * randomness - randomnessHalf, 
+					Math.random() * randomness - randomnessHalf
+				);
+		
+				random.Multiply(1/100);
 				
-				random.x = random.x;
-				random.y = random.y;
+				particles[i].acceleration = this.direction.Copy();
+				particles[i].acceleration.Add(random);
 				
-			//	trace(particles[i].position, particles[i].velocity);
-			//	trace(particles[i].direction);
-				particles[i].acceleration = this.direction.Add(random);
-				particles[i].velocity.Add(particles[i].acceleration.multiply(speed));
+				var velocity:b2Vec2 = particles[i].acceleration.Copy();
+				velocity.Multiply(speed);
+				velocity.Multiply(time.delta);
+				
+				particles[i].velocity.Add(velocity);
 				particles[i].position.Add(particles[i].velocity);
 			}
+			
 			if (particles.length < count && this.currentdensity < 0)
 			{
 				this.currentdensity = this.density;
@@ -94,14 +101,11 @@ package core
 		public override function render():void
 		{
 			graphics.clear();
-			for (var i:uint = 0; i < particles.length; ++i)
-			{
-				
+			for (var i:uint = 0; i < particles.length; ++i){
 				graphics.beginFill(0x000000);
 				graphics.lineStyle(0, 0x000000);
 				graphics.drawEllipse(particles[i].position.x, particles[i].position.y, 10, 10);
 				graphics.endFill();
-				
 			}
 		}
 		
