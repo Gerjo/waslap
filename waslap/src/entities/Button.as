@@ -10,7 +10,7 @@ package entities
 	 */
 	public class Button extends Image {
 		
-		public static function AlignUnder(top:Button, bottom:Button, spacing:Number = 10) {
+		public static function AlignUnder(top:Button, bottom:Button, spacing:Number = 10):void {
 			bottom.x = top.x;
 			bottom.y = top.y + top.height;
 		}

@@ -1,15 +1,15 @@
 package datacontainer {
 
 	public class LinkedList {
-		private var head:Node = null;
-		private var tail:Node = null;
-		private var _length = 0;
+		public var head:Node = null;
+		public var tail:Node = null;
+		private var _length:int = 0;
 		
 		public function LinkedList() {
 			
 		}
 		
-		public function get length() {
+		public function get length():int {
 			return _length;
 		}
 		

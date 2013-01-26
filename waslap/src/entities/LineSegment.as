@@ -6,8 +6,9 @@ package entities {
 	import Box2D.Dynamics.b2FixtureDef;
 	import core.Entity;
 	import core.Time;
+	import datacontainer.LinkedList;
 	import flash.events.Event;
-	
+	import physics.XY;
 	public class LineSegment extends Entity {
 		private var myBody:b2BodyDef = new b2BodyDef();
 		private var myBody2:b2Body;
@@ -54,19 +55,16 @@ package entities {
 		
 		override public function update(time:Time):void {
 			super.update(time);
-			var foo:b2Vec2 = getGame().getWorld().GetGravity().Copy();
-			foo.Multiply( -myBody2.GetMass());
-			myBody2.ApplyForce(foo, myBody2.GetWorldCenter());
 			x = myBody2.GetPosition().x;
 			y = myBody2.GetPosition().y;
-			if (x < -10) dispatchEvent(new Event(REMOVE));
+			if (x < -60) dispatchEvent(new Event(REMOVE));
 		}
 		
 		override public function render():void {
 			if (DEBUG) {
 				super.render();
 				graphics.beginFill(0x600000);
-				graphics.lineStyle(10, 0xffff00);
+				graphics.lineStyle(5, 0xffff00);
 				graphics.moveTo(start.x, start.y);
 				graphics.lineTo(end.x, end.y);
 				graphics.endFill();
