@@ -5,7 +5,7 @@ package core {
 	import flash.display.*
 	import core.*;
 	
-	public class Entity extends Sprite implements IUpdatable, IRenderable {
+	public class Entity extends Sprite implements IUpdatable, IRenderable, IMessageHandler {
 		public function Entity() {
 			
 		}
@@ -30,6 +30,14 @@ package core {
 		
 		public function render() : void {
 			// Automatically called when calling "addChild" on a entity.
+		}
+		
+		public function handleMessage(msg:Message) : void {
+			for (var i:int = 0; i < numChildren; ++i) {
+				if(getChildAt(i) is Entity) {
+					(getChildAt(i) as Entity).handleMessage(msg);
+				}
+			}
 		}
 
 		public function getGame() : Game {

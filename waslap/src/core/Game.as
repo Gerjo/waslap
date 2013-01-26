@@ -30,6 +30,10 @@ package core
 		
 		public function init() : void {
 			stage.frameRate = _fps;
+			stage.focus = this;
+			var input:Input = new Input();
+			addChild(input);
+			input.init();
 			
 			addChild(_background);
 			addChild(_entities);
