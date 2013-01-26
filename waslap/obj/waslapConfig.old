@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'26-1-2013'</value>
+      <value>'1/26/2013'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -32,17 +32,17 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-      <path-element>C:\waslap\waslap\src</path-element>
-      <path-element>C:\waslap\waslap\lib</path-element>
-      <path-element>C:\waslap\waslap\lib\alf\alf-read-only\Flash</path-element>
-      <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
+      <path-element>C:\Documents and Settings\Gerard Meier\Desktop\waslap\waslap\src</path-element>
+      <path-element>C:\Documents and Settings\Gerard Meier\Desktop\waslap\waslap\lib</path-element>
+      <path-element>C:\Documents and Settings\Gerard Meier\Desktop\waslap\waslap\lib\alf\alf-read-only\Flash</path-element>
+      <path-element>C:\Program Files\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
     <library-path append="true">
-      <path-element>C:\waslap\waslap\lib\alf\alf-read-only\ALFPackage.swc</path-element>
+      <path-element>C:\Documents and Settings\Gerard Meier\Desktop\waslap\waslap\lib\alf\alf-read-only\ALFPackage.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>
-    <path-element>C:\waslap\waslap\src\Main.as</path-element>
+    <path-element>C:\Documents and Settings\Gerard Meier\Desktop\waslap\waslap\src\Main.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>60</default-frame-rate>
