@@ -2,7 +2,7 @@ package entities {
 	import Box2D.Common.Math.b2Vec2;
 	import flash.events.Event;
 	import physics.Line;
-
+	
 	import core.*;
 	
 	public class Ground extends Entity {
@@ -13,8 +13,9 @@ package entities {
 		private var intensity:Number = 0;
 		private var offset = 0;
 		private var line:Line;
+		public var score:int;
 		public function Ground() {
-			_audio = new ALF("../src/assets/audio/barrywhite.mp3", 0, 500, false, 0);
+			_audio = new ALF("../src/assets/audio/barrywhite.mp3", 0, 30, false, 0);
 			_audio.addEventListener(_audio.FILE_LOADED, onLoadComplete);
 			_audio.addEventListener(_audio.NEW_FRAME, onNewFrame);
 			line = new Line();
@@ -23,7 +24,7 @@ package entities {
 		private function onNewFrame(e:Event):void {
 			if (_isLoaded) {
 				intensity = _audio.getIntensity();
-
+				
 				var xy:XY = new XY();
 				xy.x = offset;
 				if(Math.random() > 0.49){
@@ -43,7 +44,9 @@ package entities {
 					line.x = 5;
 					line.moveNodes();
 				}
-				trace(intensity);	
+				if (line.distance >= 100 && line.distance % 100 == 0) {
+					score++;
+				}
 			}
 		}
 		
