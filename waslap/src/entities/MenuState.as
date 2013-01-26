@@ -11,6 +11,16 @@ package entities {
 			
 		}
 		
+		public function toggle(name:String) {
+			landing.hide();
+			
+			if (this[name] != null) {
+				(this[name] as GameState).hide();
+			} else {
+				throw new Error("Cannot set '" + name + "' to visible. Variable not found in Menustate.as");
+			}
+		}
+		
 		public override function init() : void {
 			addChild(new Image("background"));
 

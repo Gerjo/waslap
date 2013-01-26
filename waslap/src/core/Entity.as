@@ -15,7 +15,7 @@ package core {
 		}
 		
 		public function init() : void {
-			trace("initn meh");
+			
 		}
 		
 		public function update(time:Time):void {

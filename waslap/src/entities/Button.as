@@ -2,6 +2,7 @@ package entities
 {
 	import core.Entity;
 	import core.Image;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	/**
@@ -10,9 +11,14 @@ package entities
 	 */
 	public class Button extends Image {
 		
-		public static function AlignUnder(top:Button, bottom:Button, spacing:Number = 10) {
-			bottom.x = top.x;
-			bottom.y = top.y + top.height;
+		public static function AlignUnder(top:Sprite, bottom:Sprite, spacing:Number = 10) {
+			//bottom.x = top.x;
+			bottom.y = top.y + top.height + spacing;
+		}
+		
+		public static function AlignLeft(left:Sprite, right:Sprite, spacing:Number = 10) {
+			right.x = spacing + left.x + left.width;
+			//right.y = left.y;
 		}
 		
 		private var normal:String;
@@ -20,11 +26,15 @@ package entities
 		private var click:String;
 		private var image:Image;
 		private var clickCallback:Function;
+		private var hoverCallback:Function;
+		private var exitCallback:Function;
 		
-		public function Button(normal:String, hover:String = "", click:String = "", clickCallback:Function = null) {
+		public function Button(normal:String, hover:String = "", click:String = "", clickCallback:Function = null, hoverCallback:Function = null,  exitCallback:Function = null) {
 			super(normal);
 			
 			this.clickCallback = clickCallback;
+			this.hoverCallback = hoverCallback;
+			this.exitCallback  = exitCallback;
 			this.normal        = normal;
 			this.hover         = (hover != "") ? hover : normal;
 			this.click         = (click != "") ? click : hover; // If there is no click, then default to the hover action.
@@ -38,10 +48,21 @@ package entities
 		
 		public function onHover(e:Event) : void {
 			load(hover);
+			
+			
+			
+			if (hoverCallback != null) {
+				hoverCallback();
+				trace("hovahasdasd");
+			}
 		}
 		
 		public function onExit(e:Event) : void {
 			load(normal);
+			
+			if (exitCallback != null) {
+				exitCallback();
+			}
 		}
 		
 		public function onMouseDown(e:Event) : void {
