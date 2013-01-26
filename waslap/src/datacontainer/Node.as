@@ -1,7 +1,8 @@
 package datacontainer {
 	public class Node {
 		public var nodeData:*;
-		public var nextNode:Node;
+		public var nextNode:Node = null;
+		public var previousNode:Node = null;
 		
 		public function Node(nodeData:*) {
 			this.nodeData = nodeData;
