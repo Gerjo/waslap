@@ -37,14 +37,13 @@ package core
 			addChild(_entities);
 			addChild(_particles);
 			addChild(_gui);
+			
 			_score = new TextField();
 			_score.x = 710;
 			_score.y = 10;
 			_gui.addChild(_score);
 			_entities.addChild(_player);
 			_player.setPosition(30, halfWindowSize.y);
-			
-			_background.addChild(new Image("test").center());
 			
 			_entities.addChild(_ground);
 			
