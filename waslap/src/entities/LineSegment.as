@@ -29,7 +29,7 @@ package entities {
 			end.y = endY;
 			
 			myBody.type = b2Body.b2_staticBody; // u no move
-			
+
 			var myCircle:b2PolygonShape = new b2PolygonShape();
 			
 			myCircle.SetAsArray(vertices);
