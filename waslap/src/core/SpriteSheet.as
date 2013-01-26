@@ -17,7 +17,6 @@ package core  {
 			masker.graphics.endFill();
 			
 			mask = masker;
-			
 		}
 		
 		public override function update(time:Time):void {
@@ -25,12 +24,9 @@ package core  {
 			
 			image.x -= clipping.x;
 			
-			trace(image.x, -image.width);
-			
 			if (image.x < -1 * (image.width - clipping.x)) {
 				image.x = 0;
 			}
-			
 		}
 	}
 }
