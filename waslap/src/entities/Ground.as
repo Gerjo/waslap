@@ -11,11 +11,11 @@ package entities {
 		private var _isLoaded:Boolean = false;
 		private var _audio:ALF;
 		private var intensity:Number = 0;
-		private var offset = 0;
+		private var offset:int = 0;
 		private var line:Line;
 		public var score:int;
 		public function Ground() {
-			_audio = new ALF("../src/assets/audio/barrywhite.mp3", 0, 30, false, 0);
+			_audio = new ALF("../src/assets/audio/barrywhite.mp3", 0, 60, false, 0);
 			_audio.addEventListener(_audio.FILE_LOADED, onLoadComplete);
 			_audio.addEventListener(_audio.NEW_FRAME, onNewFrame);
 			line = new Line();
@@ -23,11 +23,11 @@ package entities {
 		
 		private function onNewFrame(e:Event):void {
 			if (_isLoaded) {
-				intensity = _audio.getIntensity();
+				intensity = _audio.getFlux();
 				
 				var xy:XY = new XY();
 				xy.x = offset;
-				if(Math.random() > 0.49){
+				if(true){ //Math.random() > 0.50
 					xy.y = 300 - intensity / 20 ;
 					xy.y = (xy.y < 150)? 300 : xy.y;
 				}else {
