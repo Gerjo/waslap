@@ -6,11 +6,14 @@ package entities {
 	import Box2D.Dynamics.b2FixtureDef;
 	import core.Entity;
 	import core.Time;
+	import flash.events.Event;
 	
 	public class LineSegment extends Entity {
 		private var myBody:b2BodyDef = new b2BodyDef();
 		private var myBody2:b2Body;
 		private var vertices:Array;
+		
+		public var REMOVE:String = "remove";
 		
 		public var start:b2Vec2 = new b2Vec2();
 		public var end:b2Vec2 = new b2Vec2();
@@ -25,8 +28,7 @@ package entities {
 			end.x = endX;
 			end.y = endY;
 			
-			myBody.type = b2Body.b2_dynamicBody; // u no move
-			myBody.position.Add
+			myBody.type = b2Body.b2_staticBody; // u no move
 			
 			var myCircle:b2PolygonShape = new b2PolygonShape();
 			
@@ -52,8 +54,12 @@ package entities {
 		
 		override public function update(time:Time):void {
 			super.update(time);
+			var foo:b2Vec2 = getGame().getWorld().GetGravity().Copy();
+			foo.Multiply( -myBody2.GetMass());
+			myBody2.ApplyForce(foo, myBody2.GetWorldCenter());
 			x = myBody2.GetPosition().x;
 			y = myBody2.GetPosition().y;
+			if (x < -10) dispatchEvent(new Event(REMOVE));
 		}
 		
 		override public function render():void {

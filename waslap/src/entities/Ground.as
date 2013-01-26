@@ -2,98 +2,68 @@ package entities {
 	import Box2D.Common.Math.b2Vec2;
 	import flash.display.LineScaleMode;
 	import flash.events.Event;
-	import physics.Line;
+	import flash.display.Graphics;
 	
 	import core.*;
 	
 	public class Ground extends Entity {
 		
 		private var _isLoaded:Boolean = false;
-		private var _audio:ALF;
-		private var intensity:Number = 0;
-		private var flux:Number = 0;
-		private var brightness:Number = 0;
-		private var offset:int = 0;
-		private var lineIntens:Line;
-		private var lineFlux:Line;
-		private var lineBright:Line;
+		private var audio:ALF;
+		private var _offset:int = 50;
+		private var _speed:int = 15;
+		private var nodes:Array;
 		public var score:int;
+		public var segments:Array;
+		public var preEnd:b2Vec2;
 		
 		public function Ground() {
-			_audio = new ALF("../src/assets/audio/barrywhite.mp3", 0, 60, false, 0);
-			_audio.addEventListener(_audio.FILE_LOADED, onLoadComplete);
-			_audio.addEventListener(_audio.NEW_FRAME, onNewFrame);
-			lineIntens = new Line(300);
-			lineFlux = new Line(100);
-			lineBright = new Line(500);
+			audio = new ALF("../src/assets/audio/barrywhite.mp3", 0, 30, false, 0);
+			audio.addEventListener(audio.FILE_LOADED, onFileLoad);
+		}
+		
+		private function onFileLoad(e:Event):void {
+			audio.startAudio();
+			segments = new Array();
+			nodes = new Array();
+			_isLoaded = true;
+			var ls:LineSegment = new LineSegment(0, 300, 800, 300);
+			addChild(ls);
+			segments.push(ls);
+			//preEnd = ls.end.Copy();
+			audio.addEventListener(audio.NEW_FRAME, onNewFrame);
 		}
 		
 		private function onNewFrame(e:Event):void {
 			if (_isLoaded) {
-				intensity = _audio.getIntensity();
-				brightness = _audio.getBrightness();
-				flux = _audio.getFlux();
-				var xy:XY = genXY(intensity, lineIntens.y);
-				lineIntens = genLine(xy,lineIntens);
+				var intensity:Number = audio.getIntensity();
+				if (isNaN(intensity)) intensity = 0;
+				if (segments.length >= 1)
+					preEnd = segments[segments.length - 1].start.Copy();
+				//if (preEnd == null) preEnd = new b2Vec2(800, 300);
+				var ls:LineSegment = new LineSegment(preEnd.x, preEnd.y, 800 - _offset, 300 + intensity * 0.05);
+				
+				addChild(ls);
+				segments.push(ls);
 			}
 		}
 		
-		private function genXY(val:Number,yval:Number):XY {
-			var xy:XY = new XY();
-			xy.x = offset;
-			if (Math.random() > 0.50) {
-				xy.y = yval - val / 20;
-				xy.y = (xy.y < (yval * 0.5)) ? yval : xy.y;
-			} else {
-				xy.y = yval + val / 20;
-				xy.y = (xy.y > (yval * 1.5)) ? yval : xy.y;
-			}
-			return xy;
-		}
-		private function genLine(xy:XY, val:Line):Line {
-			var retval:Line = (val)? val : new Line();
-			if (isNaN(xy.y))
-					xy.y = val.y;
-				retval.nodes.push(xy);
-				var nodes:Array = retval.nodes;
-				if (nodes.length > 1) {
-					var ls:LineSegment = new LineSegment(nodes[nodes.length - 1].x, nodes[nodes.length - 1].y, nodes[nodes.length - 2].x, nodes[nodes.length - 2].y);
-					retval.segments.push(ls);
-					addChild(ls);
-				}
-				offset += 10;
-				if (offset > Game.instance.windowSize.x) {
-					retval.x = 5;
-					retval.moveNodes();
-				}
-				if (lineIntens.distance >= 100 && lineIntens.distance % 100 == 0) {
-					score++;
-				}
-				return retval;
-		}
-		
-		private function onLoadComplete(e:Event):void {
-			_audio.removeEventListener(_audio.FILE_LOADED, onLoadComplete);
-			_isLoaded = true;
-			_audio.startAudio();
-		
+		private function removeLine(e:Event):void {
+			segments.splice(segments.indexOf(e.target as LineSegment));
 		}
 		
 		public override function update(time:Time):void {
-			render();
+			super.update(time);
+			for each (var ls:LineSegment in segments) {
+				ls.addLeftOffset(-_speed);
+			}
 		}
 		
 		public override function render():void {
 			if (_isLoaded) {
+				super.render();
 				graphics.clear();
-				lineIntens.render(graphics, 0x0000FF);
 			}
 		}
 	}
-}
-import flash.display.Graphics;
-
-class XY {
-	public var x:Number;
-	public var y:Number;
 }
