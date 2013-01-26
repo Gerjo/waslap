@@ -2,6 +2,7 @@ package entities {
 	import Box2D.Common.Math.b2Vec2;
 	import flash.events.Event;
 	import physics.Line;
+	import physics.XY;
 	
 	import core.*;
 	
@@ -11,7 +12,7 @@ package entities {
 		private var _isLoaded:Boolean = false;
 		private var _audio:ALF;
 		private var intensity:Number = 0;
-		private var offset = 0;
+		private var offset:Number = 0;
 		private var line:Line;
 		public var score:int;
 		public function Ground() {
@@ -73,10 +74,4 @@ package entities {
 			return line;
 		}
 	}
-}
-import flash.display.Graphics;
-
-class XY {
-	public var x:Number;
-	public var y:Number;
 }

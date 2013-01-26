@@ -41,37 +41,30 @@ package physics {
 		}
 		
 		public function getPolygonShape(positionX:Number) : b2PolygonShape { 
-			var i:int;
+			var i:uint;
 			for (i = 0; i < nodes.length; ++i) {
-				if (nodes[i].x == positionX) {
+				if (nodes[i].x > positionX) {
 					break;
 				}
 			}
 			
 			var vert:Array = new Array();
 			
-			if (i > 0) {
+			if (nodes.length > 2 && i > 0) {
 				vert.push(new b2Vec2(nodes[i - 1].x, nodes[i - 1].y));
 				vert.push(new b2Vec2(nodes[i - 1].x, nodes[i - 1].y - 1));
 				vert.push(new b2Vec2(nodes[i].x, nodes[i].y));
 				vert.push(new b2Vec2(nodes[i].x, nodes[i].y - 1));
-			}
-			else {
-				vert.push(new b2Vec2(nodes[i].x, nodes[i].y));
-				vert.push(new b2Vec2(nodes[i].x, nodes[i].y - 1));
-				vert.push(new b2Vec2(nodes[i + 1].x, nodes[i + 1].y));
-				vert.push(new b2Vec2(nodes[i + 1].x, nodes[i + 1].y - 1));
-			}
+				
+				var lineSegment:b2PolygonShape = new b2PolygonShape();
+				lineSegment.SetAsArray(vert, vert.length);
 			
-			var lineSegment:b2PolygonShape = new b2PolygonShape();
-			lineSegment.SetAsArray(vert, vert.length);
-			
-			return lineSegment;
+				return lineSegment;
+			} else {
+				var lineSegmentElse:b2PolygonShape = new b2PolygonShape();
+				lineSegmentElse.SetAsBox(0, 0);
+				return lineSegmentElse;
+			}
 		}
 	}
-}
-
-class XY {
-	public var x:Number;
-	public var y:Number;
 }

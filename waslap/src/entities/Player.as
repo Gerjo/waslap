@@ -40,15 +40,17 @@ package entities {
 			_velocity.x = _velocity.x * _friction.x;
 			_velocity.y = _velocity.y * _friction.y;
 			
-			_velocity.Add(doCollisionStuff());
+			var collisionInfo:b2Vec2 = doCollisionStuff();
+			if (collisionInfo.x > 0 || collisionInfo.y > 0)
+				trace("FUCK YEAH!")
+			_velocity.Add(collisionInfo);
 			
 			this.x += _velocity.x;
 			this.y += _velocity.y;
 		}
 		
 		private function doCollisionStuff() : b2Vec2 {
-			var isColliding:Boolean = false;
-			var lineSegment:b2PolygonShape = getGame().soundLine.getLine().getPolygonShape(this.x)
+			var lineSegment:b2PolygonShape = getGame()._ground.getLine().getPolygonShape(this.x)
 			
 			var vert:Array = new Array();
 			vert.push(new b2Vec2(this.x, this.y));
@@ -59,11 +61,14 @@ package entities {
 			var me:b2PolygonShape = new b2PolygonShape();
 			me.SetAsArray(vert, vert.length);
 			
+			if(lineSegment.GetVertexCount() > 0) {
+			
 			var manifold:b2Manifold = new b2Manifold();
 			var diffA:b2Transform = new b2Transform();
 			var diffB:b2Transform = new b2Transform();
-			b2Collision.CollidePolygons(manifold, lineSegment, diffA, me, diffB);
 			
+			b2Collision.CollidePolygons(manifold, lineSegment, diffA, me, diffB);
+			} else return new b2Vec2();
 			return diffB.position;
 		}
 		
