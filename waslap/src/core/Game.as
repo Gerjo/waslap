@@ -28,7 +28,7 @@ package core
 		private var _score:TextField;
 		
 		private var _world:b2World    = new b2World(new b2Vec2(0, 100), false);
-
+		
 		private var gameState:GameState;
 		private var menuState:GameState;
 		
@@ -51,12 +51,13 @@ package core
 			_score.x = 710;
 			_score.y = 10;
 			
-			_particles.addChild(new ParticleEmitter(new b2Vec2(1,1)));
+			_particles.addChild(new ParticleEmitter(new b2Vec2(1,1), 10, 0xffffff, 0.3));
 			_background.addChild(new Image("background"));
 			_entities.addChild(_ground = new Ground());
 			_gui.addChild(new FrameCounter());
 			_gui.addChild(_score);
-			
+			_gui.addChild(new JumpLine(200));
+			_gui.addChild(new JumpLine(400));
 			
 			// bunch of hardcoded lines. TODO: link this to alf.
 			var start:b2Vec2 = new b2Vec2(0, 0);
@@ -104,8 +105,6 @@ package core
 				Button.AlignUnder(last, buttons[i]);
 				last = buttons[i];
 			}
-			
-			menuState.addChild(new SpriteSheet("running", 100, 100));
 		}
 		
 		public function init() : void {
