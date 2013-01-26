@@ -1,10 +1,8 @@
 package physics {
+	import Box2D.Collision.Shapes.b2PolygonShape;
+	import Box2D.Common.Math.b2Vec2;
 	import flash.display.Graphics;
 	
-	/**
-	 * ...
-	 * @author Nico Glas
-	 */
 	public class Line {
 		
 		public var nodes:Array;
@@ -39,10 +37,38 @@ package physics {
 		public function remove(nodesToRemove:int):void {
 			nodes.splice(0, nodesToRemove);
 		}
-	
+		
+		public function getPolygonShape(positionX:Number) : b2PolygonShape { 
+			var i:int;
+			for (i = 0; i < nodes.length; ++i) {
+				if (nodes[i].x == positionX) {
+					break;
+				}
+			}
+			
+			var vert:Array = new Array();
+			
+			if (i > 0) {
+				vert.push(new b2Vec2(nodes[i - 1].x, nodes[i - 1].y));
+				vert.push(new b2Vec2(nodes[i - 1].x, nodes[i - 1].y - 1));
+				vert.push(new b2Vec2(nodes[i].x, nodes[i].y));
+				vert.push(new b2Vec2(nodes[i].x, nodes[i].y - 1));
+			}
+			else {
+				vert.push(new b2Vec2(nodes[i].x, nodes[i].y));
+				vert.push(new b2Vec2(nodes[i].x, nodes[i].y - 1));
+				vert.push(new b2Vec2(nodes[i + 1].x, nodes[i + 1].y));
+				vert.push(new b2Vec2(nodes[i + 1].x, nodes[i + 1].y - 1));
+			}
+			
+			var lineSegment:b2PolygonShape = new b2PolygonShape();
+			lineSegment.SetAsArray(vert, vert.length);
+			
+			return lineSegment;
+		}
 	}
-
 }
+
 class XY {
 	public var x:Number;
 	public var y:Number;

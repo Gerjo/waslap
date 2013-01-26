@@ -65,6 +65,10 @@ package entities {
 				line.render(graphics);
 			}
 		}
+		
+		public function getLine():Line {
+			return line;
+		}
 	}
 }
 import flash.display.Graphics;

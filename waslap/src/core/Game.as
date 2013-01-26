@@ -11,6 +11,8 @@ package core
 		public var windowSize:b2Vec2     = new b2Vec2(800, 600);
 		public var halfWindowSize:b2Vec2 = new b2Vec2(windowSize.x * 0.5, windowSize.y * 0.5);
 		
+		public var soundLine:Ground;
+		
 		private var _fps:int         = 60;
 		private var _time:Time       = new Time(1 / _fps);
 		private var _player:Player   = new Player();
@@ -41,11 +43,8 @@ package core
 			_player.setPosition(30, halfWindowSize.y);
 			
 			_background.addChild(new Image("test").center());
-			
-			_entities.addChild(new Ground());
-			
-			
-			//Audio.play("airport", 1);
+			soundLine = new Ground();
+			_entities.addChild(soundLine);
 		}
 		
 		public function enterFrame(event:Event) : void {

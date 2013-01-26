@@ -1,4 +1,9 @@
 package entities {
+	import Box2D.Collision.b2AABB;
+	import Box2D.Collision.b2Collision;
+	import Box2D.Collision.b2Manifold;
+	import Box2D.Collision.Shapes.b2PolygonShape;
+	import Box2D.Common.Math.b2Transform;
 	import Box2D.Common.Math.b2Vec2;
 	import core.Entity;
 	import core.Message;
@@ -27,21 +32,39 @@ package entities {
 				}
 			}
 			
+			var difference:b2Vec2 = doCollisionStuff();
+			
 			_velocity.Add(_acceleration);
 			_acceleration = new b2Vec2(0, 0);
 			
 			_velocity.x = _velocity.x * _friction.x;
 			_velocity.y = _velocity.y * _friction.y;
 			
-			if (!_isFlipped && this.y < getGame().halfWindowSize.y) 	// should become a ground check.
-				_velocity.Add(_gravity);
-			
-			else if (_isFlipped && this.y > getGame().halfWindowSize.y) // should become a ground check.
-				_velocity.Subtract(_gravity);
+			_velocity.Add(doCollisionStuff());
 			
 			this.x += _velocity.x;
 			this.y += _velocity.y;
+		}
 		
+		private function doCollisionStuff() : b2Vec2 {
+			var isColliding:Boolean = false;
+			var lineSegment:b2PolygonShape = getGame().soundLine.getLine().getPolygonShape(this.x)
+			
+			var vert:Array = new Array();
+			vert.push(new b2Vec2(this.x, this.y));
+			vert.push(new b2Vec2(this.x, this.y + this.width));
+			vert.push(new b2Vec2(this.x + this.width, this.y + this.height));
+			vert.push(new b2Vec2(this.x + this.width, this.y));
+			
+			var me:b2PolygonShape = new b2PolygonShape();
+			me.SetAsArray(vert, vert.length);
+			
+			var manifold:b2Manifold = new b2Manifold();
+			var diffA:b2Transform = new b2Transform();
+			var diffB:b2Transform = new b2Transform();
+			b2Collision.CollidePolygons(manifold, lineSegment, diffA, me, diffB);
+			
+			return diffB;
 		}
 		
 		override public function handleMessage(msg:Message):void {
