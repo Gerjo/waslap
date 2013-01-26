@@ -23,9 +23,6 @@ package core
 		public function Game() {
 			instance = this;
 			// NB: don't do stuff here, use init().
-			
-			trace("The game is loaded and works - Thomas Jefferson (1820)");
-			trace(" - actually, that is an assumption - Winston Churchill (1946)");
 		}
 		
 		public function init() : void {
@@ -46,7 +43,7 @@ package core
 			
 			_entities.addChild(new Ground());
 			
-			//Audio.play("barrywhite", 0);
+			
 			//Audio.play("airport", 1);
 		}
 		

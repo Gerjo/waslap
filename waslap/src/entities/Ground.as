@@ -6,7 +6,7 @@ package entities
 	public class Ground extends Entity {
 		
 		private var nodes:Array = new Array();
-		
+		private var _audio:ALF;
 		public function Ground() {
 			
 			var leftOffset:Number = 0;
