@@ -1,6 +1,5 @@
 package physics {
 	import flash.display.Graphics;
-	
 	/**
 	 * ...
 	 * @author Nico Glas
@@ -9,20 +8,21 @@ package physics {
 		
 		public var nodes:Array;
 		public var distance:Number = 0;
-		
+		//public var chain:b2EdgeShape;
 		public var x:Number = 0, y:Number;
 		
-		public function Line() {
+		public function Line(x:Number = 10, y:Number=300) {
 			nodes = new Array();
+			this.x = x; this.y = y;
 		}
 		
 		public function push(val:XY):void {
 			nodes.push(val);
 		}
 		
-		public function render(graphics:Graphics):void {
-			graphics.clear();
-			graphics.lineStyle(5, 0x600000);
+		public function render(graphics:Graphics, color:uint):void {
+			//graphics.clear();
+			graphics.lineStyle(5, color);
 			
 			graphics.moveTo(nodes[0].x, nodes[0].y);
 			for (var i:int = 1; i < nodes.length; ++i) {
