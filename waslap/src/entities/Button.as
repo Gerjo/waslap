@@ -11,12 +11,12 @@ package entities
 	 */
 	public class Button extends Image {
 		
-		public static function AlignUnder(top:Sprite, bottom:Sprite, spacing:Number = 10) {
+		public static function AlignUnder(top:Sprite, bottom:Sprite, spacing:Number = 10) : void {
 			//bottom.x = top.x;
 			bottom.y = top.y + top.height + spacing;
 		}
 		
-		public static function AlignLeft(left:Sprite, right:Sprite, spacing:Number = 10) {
+		public static function AlignLeft(left:Sprite, right:Sprite, spacing:Number = 10) : void {
 			right.x = spacing + left.x + left.width;
 			//right.y = left.y;
 		}

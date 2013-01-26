@@ -30,11 +30,9 @@ package entities.menu {
 				beats[i].x = 50 + moreOffsetX;
 				beats[i].y = offset += 102;
 				
-				
 				fuses[i].x = 85 + moreOffsetX;
 				fuses[i].y = offsetFuse += 102;
 				fuses[i].visible = false;
-				
 			}
 			
 			var buttons:Array = [

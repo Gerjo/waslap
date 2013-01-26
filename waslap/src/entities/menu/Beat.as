@@ -9,8 +9,8 @@ package entities.menu {
 		private var image:Image;
 		private var speed:Number = 5;
 		private var magicNumber:Number = 333;
-		private var animationSpeed = 0.01;
-		private var _animationCounter = 0;
+		private var animationSpeed:Number = 0.01;
+		private var _animationCounter:Number = 0;
 		
 		public function Beat() {
 			addChild(masker = new Sprite());
