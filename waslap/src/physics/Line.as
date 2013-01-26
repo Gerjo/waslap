@@ -38,8 +38,8 @@ package physics {
 				nodes[i].x -= x;
 			}
 			for (var j:int = 0; j < segments.length; ++j) {
-				segments[j].start.x -= x;
-				segments[j].end.x -= x;
+				segments[j].start.x -= 50;
+				segments[j].end.x -= 50;
 			}
 			distance += 5;
 		}

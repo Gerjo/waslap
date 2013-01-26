@@ -24,7 +24,7 @@ package entities {
 			end.x = endX;
 			end.y = endY;
 			
-			myBody.type = b2Body.b2_dynamicBody; // u no move
+			myBody.type = b2Body.b2_staticBody; // u no move
 			
 			var myCircle:b2PolygonShape = new b2PolygonShape();
 			
