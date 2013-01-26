@@ -6,27 +6,30 @@ package core {
 	import core.*;
 	
 	public class Entity extends Sprite implements IUpdatable, IRenderable, IMessageHandler {
-		private var _velocity:b2Vec2 		= new b2Vec2(0, 0);
-		private var _acceleration:b2Vec2 	= new b2Vec2(0, 0);
-		private var _friction:b2Vec2		= new b2Vec2(0, 0);
+		protected var _velocity:b2Vec2 		= new b2Vec2(0, 0);
+		protected var _acceleration:b2Vec2 	= new b2Vec2(0, 0);
+		protected var _friction:b2Vec2		= new b2Vec2(0.9, 0.9);
 		
 		public function Entity() {
 			
 		}
 		
 		public function update(time:Time) : void {
-			for (var i:int = 0; i < numChildren; ++i) {
+			for (var i:int = 0; i < numChildren; ++i)
+			{
 				// Incase of 0 FPS, remove check.
-				if(getChildAt(i) is IUpdatable) {
+				if (getChildAt(i) is IUpdatable)
+				{
 					(getChildAt(i) as IUpdatable).update(time);
 				}
 			}
 			
 			_velocity.Add(_acceleration);
+			_acceleration = new b2Vec2(0, 0);
 			
 			_velocity.x = _velocity.x * _friction.x;
 			_velocity.y = _velocity.y * _friction.y;
-			
+				
 			this.x += _velocity.x;
 			this.y += _velocity.y;
 		}
