@@ -3,6 +3,7 @@ package entities {
 	import flash.display.LineScaleMode;
 	import flash.events.Event;
 	import flash.display.Graphics;
+	import flash.utils.Timer;
 	import physics.XY;
 	
 	import core.*;
