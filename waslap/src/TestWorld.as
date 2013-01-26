@@ -10,8 +10,8 @@ package {
 	import flash.events.Event;
 	
 	public class TestWorld extends Sprite {
-		public var worldScale:Number 	= 30;
-		public var world:b2World		= new b2World(new b2Vec2(0, 10), true);
+		public var worldScale:Number 	= 1;
+		public var world:b2World		= new b2World(new b2Vec2(0, 100), true);
 		public var bodyList:Array		= new Array();
 		
 		public function TestWorld() {
@@ -26,7 +26,7 @@ package {
 		
 		public function addCircle() : void {
 			var myBody:b2BodyDef = new b2BodyDef();
-			myBody.position.Set(stage.stageWidth / 2 / worldScale, stage.stageHeight / 2 / worldScale);
+			myBody.position.Set(200, 200);
 			myBody.type = b2Body.b2_dynamicBody;
 			var myCircle:b2CircleShape = new b2CircleShape(10 / worldScale);
 			var myFixture:b2FixtureDef = new b2FixtureDef();
@@ -40,11 +40,18 @@ package {
 		
 		public function addRect() : void {
 			var myBody:b2BodyDef = new b2BodyDef();
-			myBody.position.Set(0 / worldScale, 500 / worldScale);
+			myBody.position.Set(10, 300);
 			myBody.type = b2Body.b2_staticBody;
 			
 			var myCircle:b2PolygonShape = new b2PolygonShape();
-			myCircle.SetAsBox(800 / worldScale, 100 / worldScale);
+			//myCircle.SetAsBox(600, 100);
+			
+			myCircle.SetAsArray([
+				new b2Vec2(0, 0),
+				new b2Vec2(400, 10),
+				new b2Vec2(400, 100),
+				new b2Vec2(0, 100)
+			]);
 			
 			var myFixture:b2FixtureDef = new b2FixtureDef();
 			myFixture.shape = myCircle;
@@ -68,10 +75,11 @@ package {
 		static var gravc:int = 0;
 		public function update(e:Event) : void {
 			gravc++
-			if (gravc > 500) {
+			if (false && gravc > 10) {
 				gravc = 0;
 				trace("Switched grav");
-				world.SetGravity(new b2Vec2(0, -10));
+				world.GetGravity().Multiply(-1)
+				
 				for (var i:uint = 0; i < bodyList.length; ++i) {
 					bodyList[i].SetAwake(true);
 				}

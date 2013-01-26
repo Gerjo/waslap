@@ -23,6 +23,8 @@ package core
 		private var _particles:Layer  = new Layer();
 		private var _gui:Layer        = new Layer();
 		private var _score:TextField;
+		
+		
 		public function Game() {
 			instance = this;
 			// NB: don't do stuff here, use init().
