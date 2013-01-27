@@ -53,7 +53,6 @@ package entities
 			
 			if (hoverCallback != null) {
 				hoverCallback();
-				trace("hovahasdasd");
 			}
 		}
 		
