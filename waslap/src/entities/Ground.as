@@ -31,6 +31,8 @@ package entities {
 		private var fixtureDef:b2FixtureDef = new b2FixtureDef();
 		private var fixture:b2Fixture;
 		
+		private var fixtures:Array = new Array();
+		
 		public function Ground() {
 			// first node, start with a flat line.
 			nodes.push(new b2Vec2(0, getGame().halfWindowSize.y));
@@ -75,16 +77,36 @@ package entities {
 				
 				render();
 				
-				// Reload the vertices for the polygon:
 				
-				var arr:Array = nodes.slice();
 				
-				arr.push(new b2Vec2(getGame().windowSize.x + 10, 1000));
-				arr.push(new b2Vec2(0, 1000));
+				for each (var f:b2Fixture in fixtures) {
+					body.DestroyFixture(f);
+				}
 				
-				polygon.SetAsArray(arr);
-				body.DestroyFixture(fixture);
-				fixture = body.CreateFixture(fixtureDef);
+				fixtures = [];
+				
+				var last:b2Vec2 = nodes[0];
+				for (var i:int = 1; i < nodes.length; ++i) {
+					var polygon:b2PolygonShape = new b2PolygonShape();
+					var fixtureDef:b2FixtureDef = new b2FixtureDef();
+					
+					var current:b2Vec2 = nodes[i];
+					polygon.SetAsArray([
+						new b2Vec2(last.x + 2, last.y),
+						new b2Vec2(current.x + 2, current.y),
+						new b2Vec2(current.x + 2, 1000),
+						new b2Vec2(last.x + 2, 1000),
+					]);
+					
+					fixtureDef.shape = polygon;
+					var body:b2Body = getGame().getWorld().CreateBody(bodyDef);
+					fixture = body.CreateFixture(fixtureDef);
+					
+					fixtures.push(fixture);
+					
+					last = current;
+				}
+				
 			}
 		}
 		
