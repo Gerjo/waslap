@@ -4,6 +4,7 @@ package core
 	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2World;
 	import flash.display.Bitmap;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import entities.*;
@@ -20,13 +21,14 @@ package core
 		public var _fps:int          = 60;
 		private var _time:Time        = new Time(1 / _fps);
 		private var _player:Player;
+		public var _jumpLines:Array;
 		public var _ground:Ground;
 		private var _background:Layer = new Layer();
 		private var _entities:Layer   = new Layer();
 		private var _particles:Layer  = new Layer();
 		private var _gui:Layer        = new Layer();
 		private var _score:TextField;
-		
+		var input:Input;
 		private var _world:b2World    = new b2World(new b2Vec2(0, 100), false);
 		
 		public var gameState:GameState;
@@ -45,7 +47,7 @@ package core
 			gameState.addChild(_particles);
 			gameState.addChild(_gui);
 			
-			var input:Input = new Input();
+			input = new Input();
 			addChild(input);
 			input.init();
 			_score   = new TextField();
@@ -57,8 +59,13 @@ package core
 			_entities.addChild(_ground = new Ground());
 			_gui.addChild(new FrameCounter());
 			_gui.addChild(_score);
-			_gui.addChild(new JumpLine(200));
-			_gui.addChild(new JumpLine(400));
+			
+			_jumpLines = [new JumpLine(200, true), new JumpLine(400, false)];
+			
+			for each(var j:JumpLine in _jumpLines) {
+				_gui.addChild(j);
+			}
+			
 			
 			// bunch of hardcoded lines. TODO: link this to alf.
 			
@@ -91,6 +98,22 @@ package core
 			debugDraw.SetDrawScale(1);
 			debugDraw.SetFlags(b2DebugDraw.e_shapeBit);
 			_world.SetDebugDraw(debugDraw);
+		}
+		
+		public function gameover() : void {
+			trace("You're game over.");
+			gameState.hide();
+			resetEverythingBackToDefaultsAndYesIKnowThisIsALongFunctionNameSomePeopleEnjoyCodeCompletion();
+			
+			//menuState.show();
+			
+			//TODO: Some bloody message box bugging you about your highscore.
+		}
+		
+		public function resetEverythingBackToDefaultsAndYesIKnowThisIsALongFunctionNameSomePeopleEnjoyCodeCompletion() : void {
+			removeChild(gameState);
+			removeChild(input);
+			_gui.removeChild(_score);
 		}
 		
 		public override function update(time:Time) : void {

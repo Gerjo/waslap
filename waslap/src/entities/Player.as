@@ -27,13 +27,13 @@ package entities {
 		private var myBody2:b2Body;
 		
 		private var spartacles:ParticleEmitter;
-		
+		private var _isGameOverYet:Boolean;
 		private var prevPos:b2Vec2 = new b2Vec2();
 		
 		private var jumpSteps:Number = 0;
 		
 		public function Player() {
-			myBody.position.Set(Math.random() * 800, 100);
+			myBody.position.Set(Math.random() * 800, 250);
 			myBody.type = b2Body.b2_dynamicBody;
 			var myCircle:b2PolygonShape = new b2PolygonShape();
 			myCircle.SetAsBox(10, 10);
@@ -49,6 +49,8 @@ package entities {
 			myBody2 = getGame().getWorld().CreateBody(myBody);
 			myBody2.SetMassData(myMass);
 			myBody2.CreateFixture(myFixture);
+			
+			_isGameOverYet = false;
 			
 			addChild(spartacles = new ParticleEmitter(new b2Vec2(-1, -1), 50, 0xffffff, 1, -1, 10, 0.1, 0.015, 200));
 			addChild(new SpriteSheet("running", 100, 100).center().top( -75));
@@ -86,6 +88,17 @@ package entities {
 				}
 				
 				--jumpSteps;
+			}
+			
+			for each(var jumpLine:JumpLine in getGame()._jumpLines) {
+				var myPos:b2Vec2 = getPosition();
+				if ((jumpLine.getHeight() > myPos.y && jumpLine.upIsDead()) ||
+					(jumpLine.getHeight() < myPos.y && !jumpLine.upIsDead()) || myPos.x > stage.stageWidth || myPos.x < 0) {
+						if (!_isGameOverYet) { 
+							_isGameOverYet = true;
+							getGame().gameover();
+						}
+					}
 			}
 		}
 		
