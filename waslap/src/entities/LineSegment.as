@@ -45,6 +45,10 @@ package entities {
 			addChild(debugText);
 		}
 		
+		public function getWidth() : Number {
+			return end.x - start.x;
+		}
+		
 		override public function setPosition(pos:Object, y:Number = 0):Entity 
 		{
 			if (pos is Number) myBody2.SetPosition(new b2Vec2(pos as Number, y));
@@ -74,14 +78,14 @@ package entities {
 				(parent as Ground).removeMeFromArr(this);
 			}
 			
-			debugText.setText(x + " " + y);
+			debugText.setText("sx: " + start.x + "ex: " + end.x + "x:" + x);
 		}
 		
 		override public function render():void {
 			//if (DEBUG) {
 				super.render();
 				graphics.beginFill(0x600000);
-				graphics.lineStyle(5, 0xffff00);
+				graphics.lineStyle(1, 0xffff00);
 				graphics.moveTo(0, 0);
 				graphics.lineTo(end.x - start.x, end.y - start.y);
 				graphics.endFill();

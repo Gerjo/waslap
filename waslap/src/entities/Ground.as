@@ -1,5 +1,10 @@
 package entities {
+	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2Body;
+	import Box2D.Dynamics.b2BodyDef;
+	import Box2D.Dynamics.b2Fixture;
+	import Box2D.Dynamics.b2FixtureDef;
 	import datacontainer.Node;
 	import flash.display.LineScaleMode;
 	import flash.events.Event;
@@ -9,87 +14,136 @@ package entities {
 	import core.*;
 	
 	public class Ground extends Entity {
+		public var score:Number = 0;
 		
 		private var _isLoaded:Boolean = false;
 		private var audio:ALF;
-		private var currentPositiononX:int = 0;
-		private var _speed:int = 10;
-		private var nodes:Array;
-		public var score:int;
-		public var segments:Array;
-		public var preEnd:b2Vec2;
-		public var tempCount:int;
+		private var nodes:Array = new Array();
+		
+		private var interval:Number       = 100; // offset between each "sample point"
+		private var animationspeed:Number = 1;
+		private var yCenterOffset:Number  = 100; // magic number.
+		
+		// box2d stuff
+		private var bodyDef:b2BodyDef = new b2BodyDef();
+		private var body:b2Body;
+		private var polygon:b2PolygonShape = new b2PolygonShape();
+		private var fixtureDef:b2FixtureDef = new b2FixtureDef();
+		private var fixture:b2Fixture;
+		
+		private var fixtures:Array = new Array();
+		private var bodies:Array = new Array();
 		
 		public function Ground() {
-			audio = new ALF("../src/assets/audio/menu128.wav", 0, 30, true, 0);
+			// first node, start with a flat line.
+			nodes.push(new b2Vec2(0, getGame().halfWindowSize.y));
+			nodes.push(new b2Vec2(getGame().windowSize.x, getGame().halfWindowSize.y));
+			
+			audio = new ALF("../src/assets/audio/menu128.wav", 0, getGame()._fps, true, 0);
 			audio.addEventListener(audio.FILE_LOADED, onFileLoad);
+			
+			//bodyDef.type = b2Body.b2_staticBody;
+			//polygon.SetAsArray(nodes);
+			
+			//fixtureDef.shape = polygon;
+			
+			//body = getGame().getWorld().CreateBody(bodyDef);
+			//fixture = body.CreateFixture(fixtureDef);
 		}
 		
 		private function onFileLoad(e:Event):void {
 			audio.startAudio();
-			segments = new Array();
-			nodes = new Array();
-			
 			_isLoaded = true;
 			
 			audio.addEventListener(audio.NEW_FRAME, onNewFrame);
 		}
 		
 		private function onNewFrame(e:Event):void {
-			++tempCount;
-			var distance:int = 1000;
-			
 			if (_isLoaded) {
-				var intensity:Number = audio.getBrightness();
-				var nodepoint:b2Vec2 = new b2Vec2(currentPositiononX, 300 + intensity / 20);
-				if (isNaN(nodepoint.y))
-					nodepoint.y = 300;
+				var count:Number = nodes.length;
 				
-				nodes.push(nodepoint);
+				if(nodes[count-1].x < getGame().windowSize.x) {
 				
-				var size:uint = nodes.length;
-				if (size > 1) {
-					var l:LineSegment = new LineSegment(nodes[size - 1], nodes[size - 2]);
-					addChild(l);
-					segments.push(l);
-					nodes.splice(0, 1);
+					var intensity:Number = audio.getIntensity();
+					
+					var node:b2Vec2 = new b2Vec2(
+						// Last position plus interval. First node starts at zero.
+						nodes[count - 1].x + interval,
+						
+						yCenterOffset + intensity / 20
+					);
+					
+					nodes.push(node);
 				}
-				currentPositiononX += 10;
-			}
-		}
-		
-		public function removeMeFromArr(me:LineSegment):void {
-			for (var i:int = 0; i < segments.length; ++i) {
-				if (segments[i] == me) {
-					segments.splice(i, 1);
-					break;
+				
+				render();
+				
+				for (var j:int = 0; j < fixtures.length; ++j) {
+					bodies[j].DestroyFixture(fixtures[j]);
+					getGame().getWorld().DestroyBody(bodies[j]);
 				}
+			
+				fixtures = [];
+				bodies = [];
+				
+				var last:b2Vec2 = nodes[0];
+				for (var i:int = 1; i < nodes.length; ++i) {
+					var polygon:b2PolygonShape = new b2PolygonShape();
+					var fixtureDef:b2FixtureDef = new b2FixtureDef();
+					fixtureDef.density = 0;
+					var current:b2Vec2 = nodes[i];
+					
+					var reverse:Boolean = getGame().getWorld().GetGravity().y > 0 ? false : true;
+					var value:Number    = reverse ? -600 : 600;
+					
+					var vertices:Array = [
+						new b2Vec2(last.x, last.y),
+						new b2Vec2(current.x, current.y),
+						new b2Vec2(current.x, current.y + value),
+						new b2Vec2(last.x, last.y + value)
+					];
+					if (reverse == true)
+						vertices.reverse();
+						
+					polygon.SetAsArray(vertices);
+					
+					fixtureDef.shape = polygon;
+					var body:b2Body = getGame().getWorld().CreateBody(bodyDef);
+					fixture = body.CreateFixture(fixtureDef);
+					
+					bodies.push(body);
+					fixtures.push(fixture);
+					
+					last = current;
+				}
+				
 			}
-			removeChild(me);
 		}
 		
 		public override function update(time:Time):void {
 			super.update(time);
 			
-			if (segments != null) {
-				for (var i:int = 0; i < segments.length; i++) {
-					if (i > 0) {
-						segments[i].start = segments[i - 1].end;
-					}
-							segments[i].addLeftOffset(-_speed);
-			
-				}
+			for (var i:int = 0; i < nodes.length; ++i) {
+				nodes[i].x -= animationspeed;
 			}
-		
-			//trace("progress: " + audio.loadProgress);
 		}
 		
 		public override function render():void {
 			super.render();
-			if (_isLoaded) {
-				
-				graphics.clear();
+			
+			if (nodes.length == 0) {
+				return;
 			}
+			
+			graphics.clear();
+			graphics.lineStyle(1, 0xffff00);
+			graphics.moveTo(nodes[0].x, nodes[0].y);
+			
+			for (var i:int = 1; i < nodes.length; ++i) {
+				graphics.lineTo(nodes[i].x, nodes[i].y);
+			}
+			
+			graphics.endFill();
 		}
 	}
 }
