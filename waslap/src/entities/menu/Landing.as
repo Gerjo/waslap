@@ -87,10 +87,10 @@ package entities.menu {
 			
 			// Align others:
 			for (var j:int = 1; j < buttons.length; ++j) {
-				addChild(buttons[i]);
-				Button.AlignUnder(last, buttons[i]);
-				Button.AlignLeft(noteImage, buttons[i]);
-				last = buttons[i];
+				addChild(buttons[j]);
+				Button.AlignUnder(last, buttons[j]);
+				Button.AlignLeft(noteImage, buttons[j]);
+				last = buttons[j];
 			}
 		}
 	}
