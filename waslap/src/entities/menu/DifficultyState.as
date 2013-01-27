@@ -27,26 +27,30 @@ package entities.menu {
 			addChild(new Image("background"));
 			var image:Image = new Image("logo");
 			addChild(image);
-			var styleA:Array = ["red", "yellow", "green"];
 			var moreOffsetX:Number = 30;
 			var moreOffsetY:Number = -30;
 			
-			var offset:Number = 130;
+			var offset:Number = 90 + moreOffsetY;
 			var offsetFuse:Number = -142 + moreOffsetY;
 			for (var i:int = 0; i < 3; ++i) {
-				addChild(beats[i] = new Beat(styleA[i]));
+				addChild(fuses[i] = new Image("fuse"));
+				addChild(beats[i] = new Beat());
 				
 				beats[i].x = 50 + moreOffsetX;
-				beats[i].y = offset += 85;
+				beats[i].y = offset += 102;
+				
+				fuses[i].x = 85 + moreOffsetX;
+				fuses[i].y = offsetFuse += 102;
+				fuses[i].visible = false;
 			}
 			
-			var backButton:Button = new Button("playbutton", "playbuttonpressed", "", function():void {
+			var backButton:Button = new Button("backbutton", "backbuttonpressed", "", function():void {
 					hide();
 					getGame().menuState.landing.show();
 				});
 			
-			backButton.x = 540;
-			backButton.y = 500;
+			backButton.x = 600;
+			backButton.y = 520;
 			addChild(backButton);
 			
 			var buttons:Array = [
@@ -56,35 +60,34 @@ package entities.menu {
 					beats[0].showPulse();
 					beats[1].showStatic();
 					beats[2].showStatic();
-					
+					fuses[0].visible = true;
 				}, function () : void {
 					beats[0].showStatic();
-					
+					fuses[0].visible = false;
 				}), new Button("buttonnormal", "buttonnormalpressed", "", function():void {
 					getGame().loadGameState("../src/assets/audio/barrywhite.mp3");
 				}, function () : void {
 					beats[0].showStatic();
 					beats[1].showPulse();
 					beats[2].showStatic();
-					
+					fuses[1].visible = true;
 				}, function () : void {
 					beats[0].showStatic();
 					beats[1].showStatic();
 					beats[2].showStatic();
-					
+					fuses[1].visible = false;
 				}), new Button("buttoneasy", "buttoneasypressed", "", function():void {
 					getGame().loadGameState("../src/assets/audio/airport.mp3");
 				},function () : void {
 					beats[0].showStatic();
 					beats[1].showStatic();
 					beats[2].showPulse();
-					
-					
+					fuses[2].visible = true;
 				}, function () : void {
 					beats[0].showStatic();
 					beats[1].showStatic();
 					beats[2].showStatic();
-					
+					fuses[2].visible = false;
 				})
 				];
 			var last:Button = buttons[0];

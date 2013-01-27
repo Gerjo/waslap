@@ -16,6 +16,8 @@ package entities.menu {
 		
 		override public function init():void {
 			super.init();
+			var image:Image = new Image("logo");
+			addChild(image);
 			addChild(noteImage = new Image("note"));
 			
 			var moreOffsetX:Number = 30;

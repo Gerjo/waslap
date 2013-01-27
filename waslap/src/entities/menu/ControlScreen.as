@@ -21,6 +21,8 @@ package entities.menu {
 		
 		override public function init():void {
 			super.init();
+			var image:Image = new Image("logo");
+			addChild(image);
 			
 			addChild(new Image("background"));
 			
@@ -28,12 +30,12 @@ package entities.menu {
 			addChild(sparticlesWhite = new ParticleEmitter(new b2Vec2(1, -1), 100, 0x867777, 2, -1, 10, 1, 0.015, 1000));
 			
 			sparticlesRed.y = sparticlesWhite.y = getGame().windowSize.y;
-			var button:Button = new Button("playbutton", "playbuttonpressed", "", function():void {
+			var button:Button = new Button("backbutton", "backbuttonpressed", "", function():void {
 					hide();
 					getGame().menuState.landing.show();
 				});
-			button.x = 540;
-			button.y = 500;
+			button.x = 600;
+			button.y = 520;
 			addChild(button);
 		}
 	

@@ -40,11 +40,17 @@ package core {
 		[Embed(source="..\\..\\src\\assets\\images\\in-game\\running.png")]
 		private static const RUNNING:Class;
 		
-		[Embed(source="..\\..\\src\\assets\\images\\menu\\playbutton.png")]
+		[Embed(source="..\\..\\src\\assets\\images\\menu\\buttonplay.png")]
 		private static const PLAYBUTTON:Class;
 		
-		[Embed(source="..\\..\\src\\assets\\images\\menu\\playbuttonpressed.png")]
+		[Embed(source="..\\..\\src\\assets\\images\\menu\\buttonplaypressed.png")]
 		private static const PLAYBUTTONPRESSED:Class;
+		
+		[Embed(source="..\\..\\src\\assets\\images\\menu\\backbutton.png")]
+		private static const BACKBUTTON:Class;
+		
+		[Embed(source="..\\..\\src\\assets\\images\\menu\\backbuttonpressed.png")]
+		private static const BACKBUTTONPRESSED:Class;
 		
 		[Embed(source="..\\..\\src\\assets\\images\\menu\\buttoncontrols.png")]
 		private static const CONTROLSBUTTON:Class;

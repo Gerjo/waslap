@@ -32,13 +32,12 @@ package entities.menu {
 			addChild(sparticlesWhite = new ParticleEmitter(new b2Vec2(1, -1), 100, 0x867777, 2, -1, 10, 1, 0.015, 1000));
 			
 			sparticlesRed.y = sparticlesWhite.y = getGame().windowSize.y;
-			var backButton:Button = new Button("playbutton", "playbuttonpressed", "", function():void {
+			var backButton:Button = new Button("backbutton", "backbuttonpressed", "", function():void {
 					hide();
 					getGame().menuState.landing.show();
 				});
-			
-			backButton.x = 540;
-			backButton.y = 500;
+			backButton.x = 600;
+			backButton.y = 520;
 			addChild(backButton);
 		}
 	
