@@ -25,7 +25,12 @@ package entities {
 		private var debugText:Text;
 		
 		public function LineSegment(startX:Number, startY:Number, endX:Number, endY:Number) {
-			vertices = [new b2Vec2(startX, startY), new b2Vec2(endX, endY), new b2Vec2(endX + 10, endY + 10), new b2Vec2(startX + 10, startY + 10)];
+			vertices = [
+				new b2Vec2(startX, startY), 
+				new b2Vec2(endX, endY), 
+				new b2Vec2(endX + 10, endY + 10), 
+				new b2Vec2(startX + 10, startY + 10)
+			];
 			
 			start.x = startX;
 			start.y = startY;

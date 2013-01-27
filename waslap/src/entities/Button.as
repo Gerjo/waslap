@@ -49,8 +49,6 @@ package entities
 		public function onHover(e:Event) : void {
 			load(hover);
 			
-			
-			
 			if (hoverCallback != null) {
 				hoverCallback();
 			}
