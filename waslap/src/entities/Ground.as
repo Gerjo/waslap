@@ -35,7 +35,7 @@ package entities {
 			// first node, start with a flat line.
 			nodes.push(new b2Vec2(0, getGame().halfWindowSize.y));
 			nodes.push(new b2Vec2(getGame().windowSize.x, getGame().halfWindowSize.y));
-			nodes.push(new b2Vec2(getGame().windowSize.x + 10, getGame().halfWindowSize.y + 10));
+			//nodes.push(new b2Vec2(getGame().windowSize.x + 10, getGame().halfWindowSize.y + 10));
 			
 			audio = new ALF("../src/assets/audio/menu128.wav", 0, 30, true, 0);
 			audio.addEventListener(audio.FILE_LOADED, onFileLoad);
@@ -82,17 +82,6 @@ package entities {
 				fixture = body.CreateFixture(fixtureDef);
 			}
 		}
-
-		public function removeMeFromArr(me:LineSegment) : void {
-			/*for (var i:int = 0; i < segments.length; ++i) {
-				if (segments[i] == me) {
-					segments.splice(i, 1);
-					totalWidth -= me.getWidth();
-					break;
-				}
-			}
-			removeChild(me);*/
-		}
 		
 		public override function update(time:Time):void {
 			super.update(time);
@@ -100,11 +89,6 @@ package entities {
 			for (var i:int = 0; i < nodes.length; ++i) {
 				nodes[i].x -= animationspeed;
 			}
-			
-			//for each(var line:LineSegment in segments) {
-				//line.addLeftOffset(-_speed);
-			//}
-			//trace("progress: " + audio.loadProgress);
 		}
 		
 		public override function render():void {
@@ -120,12 +104,9 @@ package entities {
 			
 			for (var i:int = 1; i < nodes.length; ++i) {
 				graphics.lineTo(nodes[i].x, nodes[i].y);
-				
-				//trace("x: ", nodes[i].x, " y: ", nodes[i].y);
 			}
 			
 			graphics.endFill();
-			
 		}
 	}
 }
