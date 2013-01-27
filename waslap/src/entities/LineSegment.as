@@ -7,11 +7,9 @@ package entities {
 	import Box2D.Dynamics.b2FixtureDef;
 	import core.Entity;
 	import core.Time;
-	
 	import datacontainer.LinkedList;
 	import flash.events.Event;
-	import physics.XY;
-	
+
 	public class LineSegment extends Entity {
 		private var myBody:b2BodyDef = new b2BodyDef();
 		private var myBody2:b2Body;
@@ -21,22 +19,20 @@ package entities {
 		public var start:b2Vec2 = new b2Vec2();
 		public var end:b2Vec2 = new b2Vec2();
 		public static var DEBUG:Boolean = true;
-		
-		private var debugText:Text;
-		
-		public function LineSegment(startX:Number, startY:Number, endX:Number, endY:Number) {
-			vertices = [new b2Vec2(startX, startY), new b2Vec2(endX, endY), new b2Vec2(endX + 10, endY + 10), new b2Vec2(startX + 10, startY + 10)];
+		private var debugText:Text = new Text("", { size: 10, color: 0xFF0000 } );
+
+		public function LineSegment(start:b2Vec2, end:b2Vec2) {
+			vertices = [start, 
+						end, 
+						new b2Vec2(end.x, end.y + 10), 
+						new b2Vec2(start.x, start.y + 10)];
 			
-			start.x = startX;
-			start.y = startY;
-			
-			end.x = endX;
-			end.y = endY;
-			
+			this.start  = start;
+			this.end    = end;
+
 			myBody.type = b2Body.b2_staticBody; // u no move
 
 			var myCircle:b2PolygonShape = new b2PolygonShape();
-			
 			myCircle.SetAsArray(vertices);
 			
 			var myFixture:b2FixtureDef = new b2FixtureDef();
@@ -45,6 +41,15 @@ package entities {
 			myBody2 = getGame().getWorld().CreateBody(myBody);
 			myBody2.CreateFixture(myFixture);
 			
+			setPosition(start);
+			addChild(debugText);
+		}
+		
+		override public function setPosition(pos:Object, y:Number = 0):Entity 
+		{
+			if (pos is Number) myBody2.SetPosition(new b2Vec2(pos as Number, y));
+			else if (pos is b2Vec2) myBody2.SetPosition(pos as b2Vec2);
+			return super.setPosition(pos, y);
 		}
 		
 		public function getBody():b2BodyDef {
@@ -54,8 +59,7 @@ package entities {
 		public function addLeftOffset(num:Number) : void {
 			var pos:b2Vec2 = myBody2.GetPosition();
 			pos.x += num;
-			x = pos.x;
-			myBody2.SetPosition(pos);
+			setPosition(pos);
 		}
 		
 		override public function update(time:Time):void {
@@ -66,22 +70,22 @@ package entities {
 			y = myBody2.GetPosition().y;
 			
 			// Off-screen, notify ground to start the removal procedure.
-			if (x < -25) {
-				REMOVE = new RemoveEvent("onRemoveLine");
-				REMOVE.origin = this;
-				dispatchEvent(REMOVE);
+			if (x < end.x - start.x) {
+				(parent as Ground).removeMeFromArr(this);
 			}
+			
+			debugText.setText(x + " " + y);
 		}
 		
 		override public function render():void {
-			if (DEBUG) {
+			//if (DEBUG) {
 				super.render();
 				graphics.beginFill(0x600000);
 				graphics.lineStyle(5, 0xffff00);
-				graphics.moveTo(start.x, start.y);
-				graphics.lineTo(end.x, end.y);
+				graphics.moveTo(0, 0);
+				graphics.lineTo(end.x - start.x, end.y - start.y);
 				graphics.endFill();
-			}
+			//}
 		}
 		
 		public function setText(text:String) : void {
@@ -89,7 +93,7 @@ package entities {
 		        addChild(debugText = new Text(""));
 		    }
 		    
-		    debugText.setText(text);
+		    //debugText.setText(text);
 		} 
 	
 	}
