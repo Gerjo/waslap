@@ -28,9 +28,9 @@ package core
 		private var _score:TextField;
 		
 		private var _world:b2World    = new b2World(new b2Vec2(0, 100), false);
-
-		private var gameState:GameState;
-		private var menuState:GameState;
+		
+		public var gameState:GameState;
+		public var menuState:MenuState;
 		
 		public function Game() {
 			instance 		= this;
@@ -56,7 +56,8 @@ package core
 			_entities.addChild(_ground = new Ground());
 			_gui.addChild(new FrameCounter());
 			_gui.addChild(_score);
-			
+			_gui.addChild(new JumpLine(200));
+			_gui.addChild(new JumpLine(400));
 			
 			// bunch of hardcoded lines. TODO: link this to alf.
 			
@@ -66,49 +67,14 @@ package core
 			debugDraw();
 		}
 		
-		private function loadMenuState() : void {
-			addChild(menuState = new GameState());
-			menuState.hide();
-			gameState.show();
-			menuState.addChild(new Image("background"));
-			menuState.addChild(new FrameCounter());
-			
-			var buttons:Array = [
-				new Button("playbutton", "playbuttonpressed", "", function () : void {
-					menuState.hide();
-					gameState.show();
-				}),
-				
-				new Button("controlsbutton", "controlsbuttonpressed", "", function () : void {
-					trace("controlsbutton");
-				}),
-				
-				new Button("creditsbutton", "creditsbuttonpressed", "",  function () : void {
-					trace("creditsbutton");
-				})
-			];
-			
-			// Top button:
-			var last:Button = buttons[0];
-			menuState.addChild(last);
-			last.x = (windowSize.x - last.width) * 0.5;
-			last.y = 100;
-			
-			// Align others:
-			for (var i:int = 1; i < buttons.length; ++i) {
-				menuState.addChild(buttons[i]);
-				Button.AlignUnder(last, buttons[i]);
-				last = buttons[i];
-			}
-		}
-		
-		public function init() : void {
+
+		public override function init() : void {
 			stage.frameRate = _fps;
 			stage.focus 	= this;
 			
-			
 			loadGameState();
-			loadMenuState();
+			
+			addChild(menuState = new MenuState());
 		}
 		
 		public function enterFrame(event:Event) : void {
@@ -129,7 +95,7 @@ package core
 		public override function update(time:Time) : void {
 			super.update(time);
 			_score.text = "score = " + _ground.score;
-
+			
 			_world.Step(1 / _fps, 2, 4);
 			_world.ClearForces();
 			_world.DrawDebugData();

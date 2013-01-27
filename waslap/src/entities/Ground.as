@@ -20,6 +20,7 @@ package entities {
 		public var segments:Array;
 		public var preEnd:b2Vec2;
 		public var tempCount:int;
+
 		
 		public function Ground() {
 			audio = new ALF("../src/assets/audio/menu128.wav", 0, 30, true, 0);
