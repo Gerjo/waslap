@@ -16,8 +16,8 @@ package entities {
 		private var line:Line;
 		public var score:int;
 		
-		public function Ground() {
-			_audio = new ALF("../src/assets/audio/barrywhite.mp3", 0, 30, false, 0);
+		public function Ground(sound:String) {
+			_audio = new ALF(sound, 0, 30, false, 0);
 			_audio.addEventListener(_audio.FILE_LOADED, onLoadComplete);
 			_audio.addEventListener(_audio.NEW_FRAME, onNewFrame);
 			line = new Line();

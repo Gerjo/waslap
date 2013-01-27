@@ -37,8 +37,8 @@ package entities.menu {
 			
 			var buttons:Array = [
 				new Button("playbutton", "playbuttonpressed", "", function () : void {
-					getGame().menuState.hide();
-					getGame().gameState.show();
+					hide();
+					getGame().menuState.difficulty.show();
 				}, function () : void {
 					beats[0].showPulse();
 					beats[1].showStatic();
@@ -51,6 +51,8 @@ package entities.menu {
 				
 				new Button("controlsbutton", "controlsbuttonpressed", "", function () : void {
 					trace("controlsbutton");
+					hide();
+					getGame().menuState.control.show();
 				}, function () : void {
 					beats[0].showStatic();
 					beats[1].showPulse();
@@ -61,10 +63,10 @@ package entities.menu {
 					beats[1].showStatic();
 					beats[2].showStatic();
 					fuses[1].visible = false;
-				}),
-				
-				new Button("creditsbutton", "creditsbuttonpressed", "",  function () : void {
+				}),new Button("creditsbutton", "creditsbuttonpressed", "",  function () : void {
 					trace("creditsbutton");
+					hide();
+					getGame().menuState.credits.show();
 				}, function () : void {
 					beats[0].showStatic();
 					beats[1].showStatic();
