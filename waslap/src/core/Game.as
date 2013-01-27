@@ -64,7 +64,7 @@ package core
 			// Le player, because that's not obvious, ehhh?
 			_entities.addChild(_player = new Player());
 			
-			debugDraw();
+			//debugDraw();
 		}
 		
 

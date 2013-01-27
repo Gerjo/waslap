@@ -32,6 +32,7 @@ package entities {
 		private var fixture:b2Fixture;
 		
 		private var fixtures:Array = new Array();
+		private var bodies:Array = new Array();
 		
 		public function Ground() {
 			// first node, start with a flat line.
@@ -41,13 +42,13 @@ package entities {
 			audio = new ALF("../src/assets/audio/menu128.wav", 0, 30, true, 0);
 			audio.addEventListener(audio.FILE_LOADED, onFileLoad);
 			
-			bodyDef.type = b2Body.b2_staticBody;
-			polygon.SetAsArray(nodes);
+			//bodyDef.type = b2Body.b2_staticBody;
+			//polygon.SetAsArray(nodes);
 			
-			fixtureDef.shape = polygon;
+			//fixtureDef.shape = polygon;
 			
-			body = getGame().getWorld().CreateBody(bodyDef);
-			fixture = body.CreateFixture(fixtureDef);
+			//body = getGame().getWorld().CreateBody(bodyDef);
+			//fixture = body.CreateFixture(fixtureDef);
 		}
 		
 		private function onFileLoad(e:Event):void {
@@ -77,13 +78,13 @@ package entities {
 				
 				render();
 				
-				
-				
-				for each (var f:b2Fixture in fixtures) {
-					body.DestroyFixture(f);
+				for (var j:int = 0; j < fixtures.length; ++j) {
+					bodies[j].DestroyFixture(fixtures[j]);
+					getGame().getWorld().DestroyBody(bodies[j]);
 				}
-				
+			
 				fixtures = [];
+				bodies = [];
 				
 				var last:b2Vec2 = nodes[0];
 				for (var i:int = 1; i < nodes.length; ++i) {
@@ -92,16 +93,17 @@ package entities {
 					
 					var current:b2Vec2 = nodes[i];
 					polygon.SetAsArray([
-						new b2Vec2(last.x + 2, last.y),
-						new b2Vec2(current.x + 2, current.y),
-						new b2Vec2(current.x + 2, 1000),
-						new b2Vec2(last.x + 2, 1000),
+						new b2Vec2(last.x, last.y),
+						new b2Vec2(current.x, current.y),
+						new b2Vec2(current.x, current.y + 600),
+						new b2Vec2(last.x, last.y + 600)
 					]);
 					
 					fixtureDef.shape = polygon;
 					var body:b2Body = getGame().getWorld().CreateBody(bodyDef);
 					fixture = body.CreateFixture(fixtureDef);
 					
+					bodies.push(body);
 					fixtures.push(fixture);
 					
 					last = current;
