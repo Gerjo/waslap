@@ -12,14 +12,13 @@ package entities {
 		
 		private var _isLoaded:Boolean = false;
 		private var audio:ALF;
-		private var currentPositiononX:int = 500;
+		private var currentPositiononX:int = 0;
 		private var _speed:int = 10;
 		private var nodes:Array;
 		public var score:int;
 		public var segments:Array;
 		public var preEnd:b2Vec2;
 		public var tempCount:int;
-
 		
 		public function Ground() {
 			audio = new ALF("../src/assets/audio/menu128.wav", 0, 30, true, 0);
@@ -40,10 +39,9 @@ package entities {
 			++tempCount;
 			var distance:int = 1000;
 			
-			if (_isLoaded && tempCount % distance) {
-				var intensity:Number = audio.getIntensity();
+			if (_isLoaded) {
+				var intensity:Number = audio.getBrightness();
 				var nodepoint:b2Vec2 = new b2Vec2(currentPositiononX, 300 + intensity / 20);
-				
 				if (isNaN(nodepoint.y))
 					nodepoint.y = 300;
 				
@@ -51,17 +49,16 @@ package entities {
 				
 				var size:uint = nodes.length;
 				if (size > 1) {
-					var l:LineSegment = new LineSegment(nodes[size-1], nodes[size-2]);
+					var l:LineSegment = new LineSegment(nodes[size - 1], nodes[size - 2]);
 					addChild(l);
 					segments.push(l);
 					nodes.splice(0, 1);
 				}
-				
-				currentPositiononX ++;
+				currentPositiononX += 10;
 			}
 		}
 		
-		public function removeMeFromArr(me:LineSegment) : void {
+		public function removeMeFromArr(me:LineSegment):void {
 			for (var i:int = 0; i < segments.length; ++i) {
 				if (segments[i] == me) {
 					segments.splice(i, 1);
@@ -74,9 +71,16 @@ package entities {
 		public override function update(time:Time):void {
 			super.update(time);
 			
-			for each(var line:LineSegment in segments) {
-				line.addLeftOffset(-_speed);
+			if (segments != null) {
+				for (var i:int = 0; i < segments.length; i++) {
+					if (i > 0) {
+						segments[i].start = segments[i - 1].end;
+					}
+							segments[i].addLeftOffset(-_speed);
+			
+				}
 			}
+		
 			//trace("progress: " + audio.loadProgress);
 		}
 		
