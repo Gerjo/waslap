@@ -35,7 +35,8 @@ package entities {
 		public function Player() {
 			myBody.position.Set(Math.random() * 800, 100);
 			myBody.type = b2Body.b2_dynamicBody;
-			var myCircle:b2CircleShape = new b2CircleShape(10);
+			var myCircle:b2PolygonShape = new b2PolygonShape();
+			myCircle.SetAsBox(10, 10);
 			var myFixture:b2FixtureDef = new b2FixtureDef();
 			var myMass:b2MassData = new b2MassData();
 			myMass.mass = 0.00000002;
@@ -43,7 +44,7 @@ package entities {
 			myFixture.shape = myCircle;
 			myFixture.density = 1;
 			myFixture.friction = 0.00091;
-			myFixture.restitution = 1;
+			myFixture.restitution = 0;
 			
 			myBody2 = getGame().getWorld().CreateBody(myBody);
 			myBody2.SetMassData(myMass);
@@ -54,9 +55,7 @@ package entities {
 		}
 		
 		override public function render():void {
-			graphics.beginFill(0xff0000);
-			graphics.drawCircle(0, 0, 10);
-			graphics.endFill();
+			super.render();
 		}
 		
 		override public function update(time:Time):void {
