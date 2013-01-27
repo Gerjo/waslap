@@ -14,7 +14,7 @@ package entities {
 			
 		}
 		
-		public function toggle(name:String):void {
+		public function toggle(name:String) {
 			landing.hide();
 			
 			if (this[name] != null) {

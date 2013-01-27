@@ -2,8 +2,13 @@ package core {
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 
-	public class Image extends Sprite implements IRenderable {
+	public class Image extends Entity {
 		private var _isCentered:Boolean = false;
+		private var _name:String = "";
+		
+		public function get imageName() : String {
+			return _name;
+		}
 		
 		public function Image(name:String = "") {
 			if (name != "") {
@@ -11,7 +16,7 @@ package core {
 			}
 		}
 		
-		public function render() : void {
+		public override function render() : void {
 			
 		}
 		
@@ -40,13 +45,14 @@ package core {
 		}
 		
 		public function load(name:String) : Image {
+			_name       = name;
 			_isCentered = false;
 			
 			while(numChildren > 0) {
 				removeChildAt(0);
 			}
 			
-			addChild(Assets.load("test"));
+			addChild(Assets.load(name));
 			return this;
 		}
 	}

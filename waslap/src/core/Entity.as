@@ -5,13 +5,17 @@ package core {
 	import flash.display.*
 	import core.*;
 	
-	public class Entity extends Sprite implements IUpdatable, IRenderable, IMessageHandler {
+	public class Entity extends Sprite implements IUpdatable, IRenderable, IMessageHandler, IInit {
 		protected var _velocity:b2Vec2 = new b2Vec2(0, 0);
 		protected var _acceleration:b2Vec2 = new b2Vec2(0, 0);
 		protected var _friction:b2Vec2 = new b2Vec2(0.9, 0.9);
 		
 		public function Entity() {
 		
+		}
+		
+		public function init() : void {
+			
 		}
 		
 		public function update(time:Time):void {
@@ -21,23 +25,19 @@ package core {
 					(getChildAt(i) as IUpdatable).update(time);
 				}
 			}
-			
-			_velocity.Add(_acceleration);
-			_acceleration = new b2Vec2(0, 0);
-			
-			_velocity.x = _velocity.x * _friction.x;
-			_velocity.y = _velocity.y * _friction.y;
-			
-			this.x += _velocity.x;
-			this.y += _velocity.y;
 		}
 		
 		override public function addChild(child:DisplayObject):DisplayObject {
 			super.addChild(child);
 			
+			if (child is IInit) {
+				(child as IInit).init();
+			}
+			
 			if (child is IRenderable) {
 				(child as IRenderable).render();
 			}
+			
 			return child;
 		}
 		

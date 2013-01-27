@@ -86,7 +86,7 @@ package entities.menu {
 			Button.AlignLeft(noteImage, last);
 			
 			// Align others:
-			for (var j:int = 1; j < buttons.length; ++i) {
+			for (var i:int = 1; i < buttons.length; ++i) {
 				addChild(buttons[i]);
 				Button.AlignUnder(last, buttons[i]);
 				Button.AlignLeft(noteImage, buttons[i]);
