@@ -33,7 +33,7 @@ package entities {
 		private var jumpSteps:Number = 0;
 		
 		public function Player() {
-			myBody.position.Set(Math.random() * 800, 250);
+			myBody.position.Set(350, 250);
 			myBody.type = b2Body.b2_dynamicBody;
 			var myCircle:b2PolygonShape = new b2PolygonShape();
 			myCircle.SetAsBox(10, 10);
