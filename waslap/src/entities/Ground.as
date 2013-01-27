@@ -1,5 +1,9 @@
 package entities {
+	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2Body;
+	import Box2D.Dynamics.b2BodyDef;
+	import Box2D.Dynamics.b2FixtureDef;
 	import datacontainer.Node;
 	import flash.display.LineScaleMode;
 	import flash.events.Event;
@@ -9,83 +13,117 @@ package entities {
 	import core.*;
 	
 	public class Ground extends Entity {
+		public var score:Number = 0;
 		
 		private var _isLoaded:Boolean = false;
 		private var audio:ALF;
-		private var currentPositiononX:int = 500;
-		private var _speed:int = 10;
-		private var nodes:Array;
-		public var score:int;
-		public var segments:Array;
-		public var preEnd:b2Vec2;
-		public var tempCount:int;
-
+		private var nodes:Array = new Array();
+		
+		private var interval:Number       = 100; // offset between each "sample point"
+		private var animationspeed:Number = 5;
+		private var yCenterOffset:Number  = 100; // magic number.
+		
+		// box2d stuff
+		private var bodyDef:b2BodyDef = new b2BodyDef();
+		private var body:b2Body;
+		private var polygon:b2PolygonShape = new b2PolygonShape();
 		
 		public function Ground() {
+			// first node, start with a flat line.
+			nodes.push(new b2Vec2(0, getGame().halfWindowSize.y));
+			nodes.push(new b2Vec2(getGame().windowSize.x, getGame().halfWindowSize.y));
+			nodes.push(new b2Vec2(getGame().windowSize.x + 10, getGame().halfWindowSize.y + 10));
+			
 			audio = new ALF("../src/assets/audio/menu128.wav", 0, 30, true, 0);
 			audio.addEventListener(audio.FILE_LOADED, onFileLoad);
+			
+			bodyDef.type = b2Body.b2_staticBody;
+
+			polygon.SetAsArray(nodes);
+			
+			var myFixture:b2FixtureDef = new b2FixtureDef();
+			myFixture.shape = polygon;
+			
+			body = getGame().getWorld().CreateBody(bodyDef);
+			body.CreateFixture(myFixture);
 		}
 		
 		private function onFileLoad(e:Event):void {
 			audio.startAudio();
-			segments = new Array();
-			nodes = new Array();
-			
 			_isLoaded = true;
 			
 			audio.addEventListener(audio.NEW_FRAME, onNewFrame);
 		}
 		
 		private function onNewFrame(e:Event):void {
-			++tempCount;
-			var distance:int = 1000;
-			
-			if (_isLoaded && tempCount % distance) {
-				var intensity:Number = audio.getIntensity();
-				var nodepoint:b2Vec2 = new b2Vec2(currentPositiononX, 300 + intensity / 20);
+			if (_isLoaded) {
+				var count:Number = nodes.length;
 				
-				if (isNaN(nodepoint.y))
-					nodepoint.y = 300;
+				if(nodes[count-1].x < getGame().windowSize.x) {
 				
-				nodes.push(nodepoint);
-				
-				var size:uint = nodes.length;
-				if (size > 1) {
-					var l:LineSegment = new LineSegment(nodes[size-1], nodes[size-2]);
-					addChild(l);
-					segments.push(l);
-					nodes.splice(0, 1);
+					var intensity:Number = audio.getIntensity();
+					
+					var node:b2Vec2 = new b2Vec2(
+						// Last position plus interval. First node starts at zero.
+						nodes[count - 1].x + interval,
+						
+						yCenterOffset + intensity / 20
+					);
+					
+					nodes.push(node);
 				}
 				
-				currentPositiononX ++;
+				render();
 			}
 		}
 		
+		public function updatePolygon() : void {
+			
+		}
+		
 		public function removeMeFromArr(me:LineSegment) : void {
-			for (var i:int = 0; i < segments.length; ++i) {
+			/*for (var i:int = 0; i < segments.length; ++i) {
 				if (segments[i] == me) {
 					segments.splice(i, 1);
+					totalWidth -= me.getWidth();
 					break;
 				}
 			}
-			removeChild(me);
+			removeChild(me);*/
 		}
 		
 		public override function update(time:Time):void {
 			super.update(time);
 			
-			for each(var line:LineSegment in segments) {
-				line.addLeftOffset(-_speed);
+			for (var i:int = 0; i < nodes.length; ++i) {
+				nodes[i].x -= animationspeed;
 			}
+			
+			//for each(var line:LineSegment in segments) {
+				//line.addLeftOffset(-_speed);
+			//}
 			//trace("progress: " + audio.loadProgress);
 		}
 		
 		public override function render():void {
 			super.render();
-			if (_isLoaded) {
-				
-				graphics.clear();
+			
+			if (nodes.length == 0) {
+				return;
 			}
+			
+			graphics.clear();
+			graphics.lineStyle(1, 0xffff00);
+			graphics.moveTo(nodes[0].x, nodes[0].y);
+			
+			for (var i:int = 1; i < nodes.length; ++i) {
+				graphics.lineTo(nodes[i].x, nodes[i].y);
+				
+				//trace("x: ", nodes[i].x, " y: ", nodes[i].y);
+			}
+			
+			graphics.endFill();
+			
 		}
 	}
 }
