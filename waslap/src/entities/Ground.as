@@ -5,7 +5,6 @@ package entities {
 	import flash.events.Event;
 	import flash.display.Graphics;
 	import flash.events.MouseEvent;
-	import physics.XY;
 	import datacontainer.LinkedList;
 	import core.*;
 	
@@ -13,7 +12,7 @@ package entities {
 		
 		private var _isLoaded:Boolean = false;
 		private var audio:ALF;
-		private var _offset:int = 10;
+		private var currentPositiononX:int = 500;
 		private var _speed:int = 10;
 		private var nodes:Array;
 		public var score:int;
@@ -32,53 +31,50 @@ package entities {
 			nodes = new Array();
 			
 			_isLoaded = true;
-			//var ls:LineSegment = new LineSegment(0, 300, 800, 300);
-			//addChild(ls);
-			//segments.insertHead(ls);
 			
 			audio.addEventListener(audio.NEW_FRAME, onNewFrame);
 		}
 		
 		private function onNewFrame(e:Event):void {
 			++tempCount;
-			if (_isLoaded && segments.length < 101) {
+			var distance:int = 1000;
+			
+			if (_isLoaded && tempCount % distance) {
 				var intensity:Number = audio.getIntensity();
+				var nodepoint:b2Vec2 = new b2Vec2(currentPositiononX, 300 + intensity / 20);
 				
-				var xy:XY = new XY();
-				xy.x = _offset;
-				xy.y = 300 + intensity / 20;
+				if (isNaN(nodepoint.y))
+					nodepoint.y = 300;
 				
-				if (isNaN(xy.y))
-					xy.y = 300;
-				nodes.push(xy);
-				var index: int = nodes.length;
-				if (index > 1) {
-					var lineseg:LineSegment = new LineSegment(nodes[index - 1].x, nodes[index - 1].y, nodes[index - 2].x, nodes[index - 2].y);
-					lineseg.addEventListener(RemoveEvent.REMOVELINE, removeLine);
-					segments.push(lineseg);
-					addChild(lineseg);
+				nodes.push(nodepoint);
+				
+				var size:uint = nodes.length;
+				if (size > 1) {
+					var l:LineSegment = new LineSegment(nodes[size-1], nodes[size-2]);
+					addChild(l);
+					segments.push(l);
+					nodes.splice(0, 1);
 				}
 				
-				_offset += 30;
-				for each(var ls:LineSegment in segments) {
-					ls.addLeftOffset( -_speed);
-				}
-				var node:Node = segments.tail;
-				
+				currentPositiononX ++;
 			}
 		}
 		
-		private function removeLine(e:RemoveEvent):void {
-			for (var i:int = 0; i < segments.length; i++) {
-				if (segments[i].start.x < 50) {
-					removeChild(segments[i]);
+		public function removeMeFromArr(me:LineSegment) : void {
+			for (var i:int = 0; i < segments.length; ++i) {
+				if (segments[i] == me) {
 					segments.splice(i, 1);
 				}
 			}
+			removeChild(me);
 		}
 		
 		public override function update(time:Time):void {
 			super.update(time);
+			
+			for each(var line:LineSegment in segments) {
+				line.addLeftOffset(-_speed);
+			}
 			//trace("progress: " + audio.loadProgress);
 		}
 		
