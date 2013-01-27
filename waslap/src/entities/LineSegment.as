@@ -10,7 +10,7 @@ package entities {
 	
 	import datacontainer.LinkedList;
 	import flash.events.Event;
-	import physics.XY;
+
 	
 	public class LineSegment extends Entity {
 		private var myBody:b2BodyDef = new b2BodyDef();
@@ -71,17 +71,21 @@ package entities {
 				REMOVE.origin = this;
 				dispatchEvent(REMOVE);
 			}
+			
+			debugText.setText(x + " " + y);
+			
+			trace("w:", width, "h", height, "x", x, "y", y);
 		}
 		
 		override public function render():void {
-			if (DEBUG) {
+			//if (DEBUG) {
 				super.render();
 				graphics.beginFill(0x600000);
 				graphics.lineStyle(5, 0xffff00);
 				graphics.moveTo(start.x, start.y);
 				graphics.lineTo(end.x, end.y);
 				graphics.endFill();
-			}
+			//}
 		}
 		
 		public function setText(text:String) : void {
@@ -89,7 +93,7 @@ package entities {
 		        addChild(debugText = new Text(""));
 		    }
 		    
-		    debugText.setText(text);
+		    //debugText.setText(text);
 		} 
 	
 	}

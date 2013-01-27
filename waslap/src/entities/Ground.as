@@ -5,7 +5,7 @@ package entities {
 	import flash.events.Event;
 	import flash.display.Graphics;
 	import flash.events.MouseEvent;
-	import physics.XY;
+
 	import datacontainer.LinkedList;
 	import core.*;
 	
@@ -45,17 +45,19 @@ package entities {
 			if (_isLoaded && segments.length < 101) {
 				var intensity:Number = audio.getIntensity();
 				
-				var xy:XY = new XY();
-				xy.x = _offset;
-				xy.y = 300 + intensity / 20;
+				var xy:b2Vec2 = new b2Vec2(_offset, 300 + intensity / 20);
 				
-				if (isNaN(xy.y))
+				if (isNaN(xy.y)) {
 					xy.y = 300;
+				}
+				
 				nodes.push(xy);
+				
 				var index: int = nodes.length;
 				if (index > 1) {
 					var lineseg:LineSegment = new LineSegment(nodes[index - 1].x, nodes[index - 1].y, nodes[index - 2].x, nodes[index - 2].y);
 					lineseg.addEventListener(RemoveEvent.REMOVELINE, removeLine);
+					lineseg.setText("hello");
 					segments.push(lineseg);
 					addChild(lineseg);
 				}
