@@ -39,7 +39,7 @@ package entities {
 			nodes.push(new b2Vec2(0, getGame().halfWindowSize.y));
 			nodes.push(new b2Vec2(getGame().windowSize.x, getGame().halfWindowSize.y));
 			
-			audio = new ALF("../src/assets/audio/menu128.wav", 0, 30, true, 0);
+			audio = new ALF("../src/assets/audio/menu128.wav", 0, getGame()._fps, true, 0);
 			audio.addEventListener(audio.FILE_LOADED, onFileLoad);
 			
 			//bodyDef.type = b2Body.b2_staticBody;

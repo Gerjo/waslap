@@ -17,7 +17,7 @@ package core
 		
 		public var soundLine:Ground;
 		
-		private var _fps:int          = 30;
+		public var _fps:int          = 60;
 		private var _time:Time        = new Time(1 / _fps);
 		private var _player:Player;
 		public var _ground:Ground;
@@ -64,7 +64,7 @@ package core
 			// Le player, because that's not obvious, ehhh?
 			_entities.addChild(_player = new Player());
 			
-			//debugDraw();
+			debugDraw();
 		}
 		
 
@@ -82,7 +82,6 @@ package core
 		}
 		
 		public function debugDraw() : void {
-			//return; // Enable for debug stuff.
 			var debugDraw:b2DebugDraw = new b2DebugDraw();
 			var debugSprite:Sprite = new Sprite();
 			addChild(debugSprite);
