@@ -55,7 +55,7 @@ package entities.menu {
 			
 			var buttons:Array = [
 					new Button("buttonhard", "buttonhardpressed", "", function():void {
-					getGame().loadGameState("../src/assets/audio/175bpm_gameplay_HARD_master.wav");
+					getGame().loadGameState("../src/assets/audio/hard.wav");
 				}, function () : void {
 					beats[0].showPulse();
 					beats[1].showStatic();
@@ -77,7 +77,7 @@ package entities.menu {
 					beats[2].showStatic();
 					fuses[1].visible = false;
 				}), new Button("buttoneasy", "buttoneasypressed", "", function():void {
-					getGame().loadGameState("../src/assets/audio/airport.mp3");
+					getGame().loadGameState("../src/assets/audio/easy.wav");
 				},function () : void {
 					beats[0].showStatic();
 					beats[1].showStatic();

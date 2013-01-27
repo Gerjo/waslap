@@ -21,7 +21,7 @@ package entities {
 		private var nodes:Array = new Array();
 		
 		private var interval:Number       = 100; // offset between each "sample point"
-		private var animationspeed:Number = 1;
+		private var animationspeed:Number = 5;
 		private var yCenterOffset:Number  = 100; // magic number.
 		private var sound:String;
 		// box2d stuff
