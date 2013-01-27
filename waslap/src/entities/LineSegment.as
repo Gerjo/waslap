@@ -50,6 +50,7 @@ package entities {
 		public function addLeftOffset(num:Number) : void {
 			var pos:b2Vec2 = myBody2.GetPosition();
 			pos.x += num;
+			x = pos.x;
 			myBody2.SetPosition(pos);
 		}
 		
