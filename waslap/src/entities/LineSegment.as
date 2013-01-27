@@ -75,7 +75,7 @@ package entities {
 			
 			// Off-screen, notify ground to start the removal procedure.
 			if (x < end.x - start.x) {
-				(parent as Ground).removeMeFromArr(this);
+				
 			}
 			
 			debugText.setText("sx: " + start.x + "ex: " + end.x + "x:" + x);

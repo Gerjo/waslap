@@ -23,7 +23,7 @@ package entities {
 		private var interval:Number       = 100; // offset between each "sample point"
 		private var animationspeed:Number = 1;
 		private var yCenterOffset:Number  = 100; // magic number.
-		
+		private var sound:String;
 		// box2d stuff
 		private var bodyDef:b2BodyDef = new b2BodyDef();
 		private var body:b2Body;
@@ -34,12 +34,12 @@ package entities {
 		private var fixtures:Array = new Array();
 		private var bodies:Array = new Array();
 		
-		public function Ground() {
+		public function Ground(sound:String) {
 			// first node, start with a flat line.
 			nodes.push(new b2Vec2(0, getGame().halfWindowSize.y));
 			nodes.push(new b2Vec2(getGame().windowSize.x, getGame().halfWindowSize.y));
-			
-			audio = new ALF("../src/assets/audio/menu128.wav", 0, getGame()._fps, true, 0);
+			this.sound = sound;
+			audio = new ALF(sound, 0, getGame()._fps, true, 0);
 			audio.addEventListener(audio.FILE_LOADED, onFileLoad);
 			
 			//bodyDef.type = b2Body.b2_staticBody;

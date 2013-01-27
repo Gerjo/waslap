@@ -6,7 +6,7 @@ package entities {
 		private var _height:Number;
 		private var _upIsDead:Boolean;
 		
-		public function JumpLine(height:Number, upIsDead:Boolean) {
+		public function JumpLine(height:Number, upIsDead:Boolean = true) {
 			_height = height;
 			_upIsDead = upIsDead;
 		}
