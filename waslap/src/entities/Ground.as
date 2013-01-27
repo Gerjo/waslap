@@ -76,7 +76,13 @@ package entities {
 				render();
 				
 				// Reload the vertices for the polygon:
-				polygon.SetAsArray(nodes);
+				
+				var arr:Array = nodes.slice();
+				
+				arr.push(new b2Vec2(getGame().windowSize.x + 10, 1000));
+				arr.push(new b2Vec2(0, 1000));
+				
+				polygon.SetAsArray(arr);
 				body.DestroyFixture(fixture);
 				fixture = body.CreateFixture(fixtureDef);
 			}
