@@ -117,9 +117,9 @@ package core
 		
 		public function resetEverythingBackToDefaultsAndYesIKnowThisIsALongFunctionNameSomePeopleEnjoyCodeCompletion():void
 		{
-			removeChild(gameState);
-			removeChild(input);
-			_gui.removeChild(_score);
+			//removeChild(gameState);
+			//removeChild(input);
+			//_gui.removeChild(_score);
 		}
 		
 		public override function update(time:Time):void
