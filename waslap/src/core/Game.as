@@ -62,8 +62,10 @@ package core
 			// bunch of hardcoded lines. TODO: link this to alf.
 			
 			// Le player, because that's not obvious, ehhh?
-			_entities.addChild(_player = new Player());
 			
+			for (var i:int = 0; i < 30; ++i) {
+				_entities.addChild(_player = new Player());
+			}
 			//debugDraw();
 		}
 		
