@@ -3,6 +3,7 @@ package entities {
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2BodyDef;
+	import Box2D.Dynamics.b2Fixture;
 	import Box2D.Dynamics.b2FixtureDef;
 	import datacontainer.Node;
 	import flash.display.LineScaleMode;
@@ -27,6 +28,8 @@ package entities {
 		private var bodyDef:b2BodyDef = new b2BodyDef();
 		private var body:b2Body;
 		private var polygon:b2PolygonShape = new b2PolygonShape();
+		private var fixtureDef:b2FixtureDef = new b2FixtureDef();
+		private var fixture:b2Fixture;
 		
 		public function Ground() {
 			// first node, start with a flat line.
@@ -38,14 +41,12 @@ package entities {
 			audio.addEventListener(audio.FILE_LOADED, onFileLoad);
 			
 			bodyDef.type = b2Body.b2_staticBody;
-
 			polygon.SetAsArray(nodes);
 			
-			var myFixture:b2FixtureDef = new b2FixtureDef();
-			myFixture.shape = polygon;
+			fixtureDef.shape = polygon;
 			
 			body = getGame().getWorld().CreateBody(bodyDef);
-			body.CreateFixture(myFixture);
+			fixture = body.CreateFixture(fixtureDef);
 		}
 		
 		private function onFileLoad(e:Event):void {
@@ -74,13 +75,14 @@ package entities {
 				}
 				
 				render();
+				
+				// Reload the vertices for the polygon:
+				polygon.SetAsArray(nodes);
+				body.DestroyFixture(fixture);
+				fixture = body.CreateFixture(fixtureDef);
 			}
 		}
-		
-		public function updatePolygon() : void {
-			
-		}
-		
+
 		public function removeMeFromArr(me:LineSegment) : void {
 			/*for (var i:int = 0; i < segments.length; ++i) {
 				if (segments[i] == me) {
