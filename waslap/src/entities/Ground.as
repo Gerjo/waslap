@@ -35,7 +35,6 @@ package entities {
 			// first node, start with a flat line.
 			nodes.push(new b2Vec2(0, getGame().halfWindowSize.y));
 			nodes.push(new b2Vec2(getGame().windowSize.x, getGame().halfWindowSize.y));
-			//nodes.push(new b2Vec2(getGame().windowSize.x + 10, getGame().halfWindowSize.y + 10));
 			
 			audio = new ALF("../src/assets/audio/menu128.wav", 0, 30, true, 0);
 			audio.addEventListener(audio.FILE_LOADED, onFileLoad);
