@@ -13,6 +13,7 @@ package entities {
 	import core.Entity;
 	import core.Game;
 	import core.Message;
+	import core.ParticleEmitter;
 	import core.SpriteSheet;
 	import core.Time;
 	import core.IUpdatable;
@@ -25,23 +26,29 @@ package entities {
 		private var myBody:b2BodyDef = new b2BodyDef();
 		private var myBody2:b2Body;
 		
+		private var spartacles:ParticleEmitter;
+		
+		private var prevPos:b2Vec2 = new b2Vec2();
+		
 		public function Player() {
-			myBody.position.Set(100, 100);
+			myBody.position.Set(Math.random() * 800, 100);
 			myBody.type = b2Body.b2_dynamicBody;
-			var myCircle:b2CircleShape = new b2CircleShape(5);
+			var myCircle:b2CircleShape = new b2CircleShape(10);
 			var myFixture:b2FixtureDef = new b2FixtureDef();
 			var myMass:b2MassData = new b2MassData();
 			myMass.mass = 0.00000002;
 			
 			myFixture.shape = myCircle;
-			myFixture.density = 10;
-			myFixture.friction = 0.91;
+			myFixture.density = 1;
+			myFixture.friction = 0.00091;
 			
 			myBody2 = getGame().getWorld().CreateBody(myBody);
 			myBody2.SetMassData(myMass);
 			myBody2.CreateFixture(myFixture);
 			
-			addChild(new SpriteSheet("running", 100, 100).center().top(-75));
+			addChild(new SpriteSheet("running", 100, 100).center().top( -75));
+			
+			addChild(spartacles = new ParticleEmitter(new b2Vec2(-1, -1), 50, 0xffffff, 1, -1, 10, 0.1, 0.015, 200));
 		}
 		
 		override public function render():void {
@@ -60,6 +67,11 @@ package entities {
 			else
 				_onGround = false;
 		
+			spartacles.direction = prevPos.Copy();
+			spartacles.direction.Subtract(getPosition());
+			spartacles.direction.Normalize();
+			
+			prevPos = getPosition();
 		}
 		
 		override public function handleMessage(msg:Message):void {

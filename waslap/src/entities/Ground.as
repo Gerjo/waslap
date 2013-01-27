@@ -21,7 +21,7 @@ package entities {
 		private var nodes:Array = new Array();
 		
 		private var interval:Number       = 100; // offset between each "sample point"
-		private var animationspeed:Number = 5;
+		private var animationspeed:Number = 1;
 		private var yCenterOffset:Number  = 100; // magic number.
 		
 		// box2d stuff
@@ -90,14 +90,14 @@ package entities {
 				for (var i:int = 1; i < nodes.length; ++i) {
 					var polygon:b2PolygonShape = new b2PolygonShape();
 					var fixtureDef:b2FixtureDef = new b2FixtureDef();
-					
+					fixtureDef.density = 9000.1;
 					var current:b2Vec2 = nodes[i];
 					polygon.SetAsArray([
 						new b2Vec2(last.x, last.y),
 						new b2Vec2(current.x, current.y),
 						new b2Vec2(current.x, current.y + 600),
 						new b2Vec2(last.x, last.y + 600)
-					]);
+					].reverse());
 					
 					fixtureDef.shape = polygon;
 					var body:b2Body = getGame().getWorld().CreateBody(bodyDef);
