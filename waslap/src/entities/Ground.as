@@ -69,10 +69,17 @@ package entities {
 		}
 		
 		private function removeLine(e:RemoveEvent):void {
+		    // Gerjo: attempt to remove e.origin, instead of for loop routine.
+		    // ^^ if anything, it should increase performance.
 			for (var i:int = 0; i < segments.length; i++) {
 				if (segments[i].start.x < 50) {
 					removeChild(segments[i]);
 					segments.splice(i, 1);
+					// Quite possibly we need this here:
+					// i = (i > 0) ? i - 1 : 0;
+					// or
+					// --i;
+					// ^^ since the array indices are shifted to the left.
 				}
 			}
 		}
