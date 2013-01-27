@@ -68,6 +68,7 @@ package entities {
 			// Off-screen, notify ground to start the removal procedure.
 			if (x < -25) {
 				REMOVE = new RemoveEvent("onRemoveLine");
+				REMOVE.origin = this;
 				dispatchEvent(REMOVE);
 			}
 		}
