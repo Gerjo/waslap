@@ -49,14 +49,16 @@ package entities {
 			myBody2.SetMassData(myMass);
 			myBody2.CreateFixture(myFixture);
 			
-			addChild(spartacles = new ParticleEmitter(new b2Vec2(-1, -1), 50, 0xffffff, 1, -1, 10, 0.1, 0.015, 200));
+			addChild(spartacles = new ParticleEmitter(new b2Vec2(-1, -1), 50, 0x0000ff, 1, -1, 10, 0.5, 0.015, 200));
 			addChild(new SpriteSheet("running", 100, 100).center().top( -75));
+			
+			spartacles.y = -20;
 		}
 		
 		override public function render():void {
-			graphics.beginFill(0xff0000);
-			graphics.drawCircle(0, 0, 10);
-			graphics.endFill();
+			//graphics.beginFill(0xff0000);
+			//graphics.drawCircle(0, 0, 10);
+			//graphics.endFill();
 		}
 		
 		override public function update(time:Time):void {
