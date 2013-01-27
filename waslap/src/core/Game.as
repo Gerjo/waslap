@@ -1,5 +1,4 @@
-package core
-{
+package core {
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2World;
@@ -11,8 +10,7 @@ package core
 	import Box2D.Common.Math.b2Vec2;
 	import flash.text.TextField;
 	
-	public class Game extends Entity
-	{
+	public class Game extends Entity {
 		public static var instance:Game; // hack hack hack!
 		public var windowSize:b2Vec2 = new b2Vec2(800, 600);
 		public var halfWindowSize:b2Vec2 = new b2Vec2(windowSize.x * 0.5, windowSize.y * 0.5);
@@ -35,17 +33,12 @@ package core
 		public var gameState:GameState;
 		public var menuState:MenuState;
 		
-		public function Game()
-		{
+		public function Game() {
 			instance = this;
-			// NB: don't do stuff here, use init().
-		
 		}
 		
-		public function loadGameState(sound:String):void
-		{
-			if (!isLoaded)
-			{
+		public function loadGameState(sound:String):void {
+			if (!isLoaded) {
 				addChild(gameState = new GameState());
 				gameState.addChild(_background);
 				gameState.addChild(_entities);
@@ -62,9 +55,9 @@ package core
 				_particles.addChild(new ParticleEmitter(new b2Vec2(1, 1), 10, 0xffffff, 0.3));
 				_background.addChild(new Image("background"));
 				_entities.addChild(_ground = new Ground(sound));
-				_gui.addChild(new FrameCounter());
+				//_gui.addChild(new FrameCounter());
 				_gui.addChild(_score);
-				_jumpLines = [new JumpLine(200, true), new JumpLine(400, false)];
+				_jumpLines = [new JumpLine(100, true), new JumpLine(500, false)];
 				
 				for each (var j:JumpLine in _jumpLines)
 					_gui.addChild(j);
@@ -75,25 +68,31 @@ package core
 				debugDraw();
 				isLoaded = true;
 				menuState.hide();
+				
+				// NB: don't do stuff here, use init().
+				var a:Sprite = new Sprite();
+				a.graphics.beginFill(0xFFFFFF);
+				a.graphics.drawRect(0, 0, 800, 600);
+				a.graphics.endFill();
+				gameState.addChild(a);
+				gameState.mask = a;
+				
 				gameState.show();
 			}
 		}
 		
-		public override function init():void
-		{
+		public override function init():void {
 			stage.frameRate = _fps;
 			stage.focus = this;
 			
 			addChild(menuState = new MenuState());
 		}
 		
-		public function enterFrame(event:Event):void
-		{
+		public function enterFrame(event:Event):void {
 			this.update(_time);
 		}
 		
-		public function debugDraw():void
-		{
+		public function debugDraw():void {
 			return;
 			var debugDraw:b2DebugDraw = new b2DebugDraw();
 			var debugSprite:Sprite = new Sprite();
@@ -104,8 +103,7 @@ package core
 			_world.SetDebugDraw(debugDraw);
 		}
 		
-		public function gameover():void
-		{
+		public function gameover():void {
 			trace("You're game over.");
 			gameState.hide();
 			resetEverythingBackToDefaultsAndYesIKnowThisIsALongFunctionNameSomePeopleEnjoyCodeCompletion();
@@ -115,18 +113,15 @@ package core
 			//TODO: Some bloody message box bugging you about your highscore.
 		}
 		
-		public function resetEverythingBackToDefaultsAndYesIKnowThisIsALongFunctionNameSomePeopleEnjoyCodeCompletion():void
-		{
+		public function resetEverythingBackToDefaultsAndYesIKnowThisIsALongFunctionNameSomePeopleEnjoyCodeCompletion():void {
 			//removeChild(gameState);
 			//removeChild(input);
 			//_gui.removeChild(_score);
 		}
 		
-		public override function update(time:Time):void
-		{
+		public override function update(time:Time):void {
 			super.update(time);
-			if (isLoaded)
-			{
+			if (isLoaded) {
 				_score.text = "score = " + _ground.score;
 				
 				_world.Step(1 / _fps, 2, 4);
@@ -135,13 +130,11 @@ package core
 			}
 		}
 		
-		public function getWorld():b2World
-		{
+		public function getWorld():b2World {
 			return _world;
 		}
 		
-		public function getPlayer():Player
-		{
+		public function getPlayer():Player {
 			return _player;
 		}
 	}

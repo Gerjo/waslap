@@ -128,20 +128,16 @@ package entities {
 		}
 		
 		public function flip():void {
-			var position:b2Vec2 = myBody2.GetPosition();
 			var gravity:b2Vec2 = getGame().getWorld().GetGravity();
 			
 			if (!_isFlipped) {
-				position.y += this.height;
 				gravity.y *= -1;
 				this.scaleY *= -1;
 			} else {
-				position.y -= this.height;
 				gravity.y *= -1;
 				this.scaleY *= -1;
 			}
 			
-			myBody2.SetPosition(position);
 			getGame().getWorld().SetGravity(gravity);
 			
 			_isFlipped = _isFlipped ? false : true;

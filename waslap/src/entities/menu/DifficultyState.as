@@ -55,7 +55,7 @@ package entities.menu {
 			
 			var buttons:Array = [
 					new Button("buttonhard", "buttonhardpressed", "", function():void {
-					getGame().loadGameState("../src/assets/audio/skrillex.mp3");
+					getGame().loadGameState("../src/assets/audio/175bpm_gameplay_HARD_master.wav");
 				}, function () : void {
 					beats[0].showPulse();
 					beats[1].showStatic();
