@@ -7,7 +7,7 @@ package entities {
 	import Box2D.Dynamics.b2FixtureDef;
 	import core.Entity;
 	import core.Time;
-	import core.Text;
+	
 	import datacontainer.LinkedList;
 	import flash.events.Event;
 	import physics.XY;
