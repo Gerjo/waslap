@@ -7,9 +7,11 @@ package entities {
 	import Box2D.Dynamics.b2FixtureDef;
 	import core.Entity;
 	import core.Time;
+	import core.Text;
 	import datacontainer.LinkedList;
 	import flash.events.Event;
 	import physics.XY;
+	
 	public class LineSegment extends Entity {
 		private var myBody:b2BodyDef = new b2BodyDef();
 		private var myBody2:b2Body;
@@ -19,6 +21,8 @@ package entities {
 		public var start:b2Vec2 = new b2Vec2();
 		public var end:b2Vec2 = new b2Vec2();
 		public static var DEBUG:Boolean = true;
+		
+		private var debugText:Text;
 		
 		public function LineSegment(startX:Number, startY:Number, endX:Number, endY:Number) {
 			vertices = [new b2Vec2(startX, startY), new b2Vec2(endX, endY), new b2Vec2(endX + 10, endY + 10), new b2Vec2(startX + 10, startY + 10)];
@@ -74,6 +78,14 @@ package entities {
 				graphics.endFill();
 			}
 		}
+		
+		public function setText(text:String) : void {
+		    if(debugText == null) {
+		        addChild(debugText = new Text(""));
+		    }
+		    
+		    debugText.setText(text);
+		} 
 	
 	}
 }
