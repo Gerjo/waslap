@@ -60,8 +60,12 @@ package entities {
 		
 		override public function update(time:Time):void {
 			super.update(time);
+			
+			// Sync the Entity position with whatever Box2D came up with.
 			x = myBody2.GetPosition().x;
 			y = myBody2.GetPosition().y;
+			
+			// Off-screen, notify ground to start the removal procedure.
 			if (x < -25) {
 				REMOVE = new RemoveEvent("onRemoveLine");
 				dispatchEvent(REMOVE);
