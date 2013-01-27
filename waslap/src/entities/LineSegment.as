@@ -1,4 +1,5 @@
 package entities {
+	import Box2D.Collision.Shapes.b2MassData;
 	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.Dynamics.b2Body;
@@ -14,8 +15,7 @@ package entities {
 		private var myBody2:b2Body;
 		private var vertices:Array;
 		
-		public var REMOVE:String = "remove";
-		
+		public var REMOVE:RemoveEvent;
 		public var start:b2Vec2 = new b2Vec2();
 		public var end:b2Vec2 = new b2Vec2();
 		public static var DEBUG:Boolean = true;
@@ -37,10 +37,10 @@ package entities {
 			
 			var myFixture:b2FixtureDef = new b2FixtureDef();
 			myFixture.shape = myCircle;
-			myFixture.density = 1;
-			myFixture.friction = 0;
+			
 			myBody2 = getGame().getWorld().CreateBody(myBody);
 			myBody2.CreateFixture(myFixture);
+			
 		}
 		
 		public function getBody():b2BodyDef {
@@ -57,7 +57,10 @@ package entities {
 			super.update(time);
 			x = myBody2.GetPosition().x;
 			y = myBody2.GetPosition().y;
-			if (x < -60) dispatchEvent(new Event(REMOVE));
+			if (x < -25) {
+				REMOVE = new RemoveEvent("onRemoveLine");
+				dispatchEvent(REMOVE);
+			}
 		}
 		
 		override public function render():void {

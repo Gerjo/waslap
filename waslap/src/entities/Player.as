@@ -27,14 +27,14 @@ package entities {
 		
 		public function Player() {
 			myBody.position.Set(100, 100);
-			myBody.type = b2Body.b2_dynamicBody;
-			var myCircle:b2CircleShape = new b2CircleShape(10);
+			myBody.type = b2Body.b2_kinematicBody;
+			var myCircle:b2CircleShape = new b2CircleShape(5);
 			var myFixture:b2FixtureDef = new b2FixtureDef();
 			var myMass:b2MassData = new b2MassData();
 			myMass.mass = 0.00000002;
 			
 			myFixture.shape = myCircle;
-			myFixture.density = 1;
+			myFixture.density = -1000;
 			myFixture.friction = 0.91;
 			
 			myBody2 = getGame().getWorld().CreateBody(myBody);

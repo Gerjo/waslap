@@ -15,21 +15,21 @@ package entities {
 		private var audio:ALF;
 		private var _offset:int = 10;
 		private var _speed:int = 10;
-		private var nodes:LinkedList;
+		private var nodes:Array;
 		public var score:int;
-		public var segments:LinkedList;
+		public var segments:Array;
 		public var preEnd:b2Vec2;
 		public var tempCount:int;
 		
 		public function Ground() {
-			audio = new ALF("../src/assets/audio/barrywhite.mp3", 0, 30, false, 0);
+			audio = new ALF("../src/assets/audio/menu128.wav", 0, 30, true, 0);
 			audio.addEventListener(audio.FILE_LOADED, onFileLoad);
 		}
 		
 		private function onFileLoad(e:Event):void {
 			audio.startAudio();
-			segments = new LinkedList();
-			nodes = new LinkedList();
+			segments = new Array();
+			nodes = new Array();
 			
 			_isLoaded = true;
 			//var ls:LineSegment = new LineSegment(0, 300, 800, 300);
@@ -41,51 +41,45 @@ package entities {
 		
 		private function onNewFrame(e:Event):void {
 			++tempCount;
-			if (_isLoaded) {
+			if (_isLoaded && segments.length < 101) {
 				var intensity:Number = audio.getIntensity();
 				
 				var xy:XY = new XY();
 				xy.x = _offset;
-				xy.y = 300 - intensity / 20;
+				xy.y = 300 + intensity / 20;
 				
 				if (isNaN(xy.y))
 					xy.y = 300;
-				nodes.insertHead(xy);
-				var head:Node = nodes.head;
-				var index:int = nodes.length;
-				if (nodes.length > 1) {
-					var lineseg:LineSegment = new LineSegment((head.getNext().getData() as XY).x, (head.getNext().getData() as XY).y, (head.getData() as XY).x, (head.getData() as XY).y);
+				nodes.push(xy);
+				var index: int = nodes.length;
+				if (index > 1) {
+					var lineseg:LineSegment = new LineSegment(nodes[index - 1].x, nodes[index - 1].y, nodes[index - 2].x, nodes[index - 2].y);
+					lineseg.addEventListener(RemoveEvent.REMOVELINE, removeLine);
+					segments.push(lineseg);
 					addChild(lineseg);
-					segments.insertHead(lineseg);
 				}
 				
 				_offset += 30;
-				segments.foreach(function(item:LineSegment):void {
-					item.addLeftOffset( -_speed);
-				});
-				var node:Node = segments.tail;
-				while (node != null) {
-					if (node.nextNode != null) {
-						var line:LineSegment = (node.getData() as LineSegment);
-						var pastline:LineSegment = (node.nextNode.getData() as LineSegment);
-						line.start = pastline.end;
-					}
-					node = node.previousNode;
+				for each(var ls:LineSegment in segments) {
+					ls.addLeftOffset( -_speed);
 				}
+				var node:Node = segments.tail;
+				
 			}
 		}
 		
-		private function removeLine():void {
-			while (segments.length > 100) {
-				segments.popTail();
+		private function removeLine(e:RemoveEvent):void {
+			for (var i:int = 0; i < segments.length; i++) {
+				if (segments[i].start.x < 50) {
+					removeChild(segments[i]);
+					segments.splice(i, 1);
+				}
 			}
 		}
 		
 		public override function update(time:Time):void {
 			super.update(time);
-			if (segments != null && segments.length > 100) {
-				removeLine();
-			}
+			//trace("progress: " + audio.loadProgress);
 		}
 		
 		public override function render():void {
