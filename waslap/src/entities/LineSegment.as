@@ -19,7 +19,8 @@ package entities {
 		public var start:b2Vec2 = new b2Vec2();
 		public var end:b2Vec2 = new b2Vec2();
 		public static var DEBUG:Boolean = true;
-		
+		private var debugText:Text = new Text("", { size: 10, color: 0xFF0000 } );
+
 		public function LineSegment(start:b2Vec2, end:b2Vec2) {
 			vertices = [start, 
 						end, 
@@ -28,6 +29,7 @@ package entities {
 			
 			this.start  = start;
 			this.end    = end;
+
 			myBody.type = b2Body.b2_staticBody; // u no move
 
 			var myCircle:b2PolygonShape = new b2PolygonShape();
@@ -40,6 +42,7 @@ package entities {
 			myBody2.CreateFixture(myFixture);
 			
 			setPosition(start);
+			addChild(debugText);
 		}
 		
 		override public function setPosition(pos:Object, y:Number = 0):Entity 
@@ -61,23 +64,37 @@ package entities {
 		
 		override public function update(time:Time):void {
 			super.update(time);
+			
+			// Sync the Entity position with whatever Box2D came up with.
 			x = myBody2.GetPosition().x;
 			y = myBody2.GetPosition().y;
-			if (x < -25) {
+			
+			// Off-screen, notify ground to start the removal procedure.
+			if (x < end.x - start.x) {
 				(parent as Ground).removeMeFromArr(this);
 			}
+			
+			debugText.setText(x + " " + y);
 		}
 		
 		override public function render():void {
-			if (DEBUG) {
+			//if (DEBUG) {
 				super.render();
 				graphics.beginFill(0x600000);
 				graphics.lineStyle(5, 0xffff00);
 				graphics.moveTo(0, 0);
 				graphics.lineTo(end.x - start.x, end.y - start.y);
 				graphics.endFill();
-			}
+			//}
 		}
+		
+		public function setText(text:String) : void {
+		    if(debugText == null) {
+		        addChild(debugText = new Text(""));
+		    }
+		    
+		    //debugText.setText(text);
+		} 
 	
 	}
 }

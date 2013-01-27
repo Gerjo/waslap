@@ -19,6 +19,7 @@ package entities {
 		public var segments:Array;
 		public var preEnd:b2Vec2;
 		public var tempCount:int;
+
 		
 		public function Ground() {
 			audio = new ALF("../src/assets/audio/menu128.wav", 0, 30, true, 0);
@@ -64,6 +65,7 @@ package entities {
 			for (var i:int = 0; i < segments.length; ++i) {
 				if (segments[i] == me) {
 					segments.splice(i, 1);
+					break;
 				}
 			}
 			removeChild(me);

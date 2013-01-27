@@ -7,6 +7,18 @@ package core {
 			
 		}
 		
+		[Embed(source = "..\\..\\src\\assets\\images\\menu\\fuse.png")]
+		private static const FUSE:Class;
+		
+		[Embed(source = "..\\..\\src\\assets\\images\\menu\\pulse1.png")]
+		private static const PULSE:Class;
+		
+		[Embed(source = "..\\..\\src\\assets\\images\\menu\\pulse2.png")]
+		private static const STATIC:Class;
+		
+		[Embed(source = "..\\..\\src\\assets\\images\\menu\\note.png")]
+		private static const NOTE:Class;
+		
 		[Embed(source = "..\\..\\src\\assets\\images\\in-game\\running.png")]
 		private static const RUNNING:Class;
 				

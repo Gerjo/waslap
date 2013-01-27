@@ -9,6 +9,8 @@ package entities {
 		
 		public static const REMOVELINE:String = "onRemoveLine";
 		
+		public var origin:LineSegment;
+		
 		public function RemoveEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false) { 
 			super(type, bubbles, cancelable);
 			
