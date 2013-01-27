@@ -92,12 +92,20 @@ package entities {
 					var fixtureDef:b2FixtureDef = new b2FixtureDef();
 					fixtureDef.density = 0;
 					var current:b2Vec2 = nodes[i];
-					polygon.SetAsArray([
+					
+					var reverse:Boolean = getGame().getWorld().GetGravity().y > 0 ? false : true;
+					var value:Number    = reverse ? -600 : 600;
+					
+					var vertices:Array = [
 						new b2Vec2(last.x, last.y),
 						new b2Vec2(current.x, current.y),
-						new b2Vec2(current.x, current.y + 600),
-						new b2Vec2(last.x, last.y + 600)
-					]);
+						new b2Vec2(current.x, current.y + value),
+						new b2Vec2(last.x, last.y + value)
+					];
+					if (reverse == true)
+						vertices.reverse();
+						
+					polygon.SetAsArray(vertices);
 					
 					fixtureDef.shape = polygon;
 					var body:b2Body = getGame().getWorld().CreateBody(bodyDef);

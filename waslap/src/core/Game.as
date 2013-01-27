@@ -66,7 +66,7 @@ package core
 			for (var i:int = 0; i < 3; ++i) {
 				_entities.addChild(_player = new Player());
 			}
-			debugDraw();
+			//debugDraw();
 		}
 		
 
