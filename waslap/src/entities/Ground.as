@@ -1,77 +1,149 @@
 package entities {
+	import Box2D.Collision.Shapes.b2PolygonShape;
 	import Box2D.Common.Math.b2Vec2;
+	import Box2D.Dynamics.b2Body;
+	import Box2D.Dynamics.b2BodyDef;
+	import Box2D.Dynamics.b2Fixture;
+	import Box2D.Dynamics.b2FixtureDef;
+	import datacontainer.Node;
+	import flash.display.LineScaleMode;
 	import flash.events.Event;
-	import physics.Line;
-	import physics.XY;
-	
+	import flash.display.Graphics;
+	import flash.events.MouseEvent;
+	import datacontainer.LinkedList;
 	import core.*;
 	
 	public class Ground extends Entity {
+		public var score:Number = 0;
 		
-		private var nodes:Array = new Array();
 		private var _isLoaded:Boolean = false;
-		private var _audio:ALF;
-		private var intensity:Number = 0;
-		private var offset:Number = 0;
-		private var line:Line;
-		public var score:int;
+		private var audio:ALF;
+		private var nodes:Array = new Array();
 		
-		public function Ground(sound:String) {
-			_audio = new ALF(sound, 0, 30, false, 0);
-			_audio.addEventListener(_audio.FILE_LOADED, onLoadComplete);
-			_audio.addEventListener(_audio.NEW_FRAME, onNewFrame);
-			line = new Line();
+		private var interval:Number       = 100; // offset between each "sample point"
+		private var animationspeed:Number = 1;
+		private var yCenterOffset:Number  = 100; // magic number.
+		
+		// box2d stuff
+		private var bodyDef:b2BodyDef = new b2BodyDef();
+		private var body:b2Body;
+		private var polygon:b2PolygonShape = new b2PolygonShape();
+		private var fixtureDef:b2FixtureDef = new b2FixtureDef();
+		private var fixture:b2Fixture;
+		
+		private var fixtures:Array = new Array();
+		private var bodies:Array = new Array();
+		
+		public function Ground() {
+			// first node, start with a flat line.
+			nodes.push(new b2Vec2(0, getGame().halfWindowSize.y));
+			nodes.push(new b2Vec2(getGame().windowSize.x, getGame().halfWindowSize.y));
+			
+			audio = new ALF("../src/assets/audio/menu128.wav", 0, getGame()._fps, true, 0);
+			audio.addEventListener(audio.FILE_LOADED, onFileLoad);
+			
+			//bodyDef.type = b2Body.b2_staticBody;
+			//polygon.SetAsArray(nodes);
+			
+			//fixtureDef.shape = polygon;
+			
+			//body = getGame().getWorld().CreateBody(bodyDef);
+			//fixture = body.CreateFixture(fixtureDef);
+		}
+		
+		private function onFileLoad(e:Event):void {
+			audio.startAudio();
+			_isLoaded = true;
+			
+			audio.addEventListener(audio.NEW_FRAME, onNewFrame);
 		}
 		
 		private function onNewFrame(e:Event):void {
 			if (_isLoaded) {
-				intensity = _audio.getIntensity();
+				var count:Number = nodes.length;
 				
-				var xy:XY = new XY();
-				xy.x = offset;
-				if(Math.random() > 0.49){
-					xy.y = 300 - intensity / 20 ;
-					xy.y = (xy.y < 150)? 300 : xy.y;
-				}else {
-					xy.y = 300 + intensity / 20 ;
-					xy.y = (xy.y > 450)? 300 : xy.y;
+				if(nodes[count-1].x < getGame().windowSize.x) {
+				
+					var intensity:Number = audio.getIntensity();
+					
+					var node:b2Vec2 = new b2Vec2(
+						// Last position plus interval. First node starts at zero.
+						nodes[count - 1].x + interval,
+						
+						yCenterOffset + intensity / 20
+					);
+					
+					nodes.push(node);
 				}
 				
-				if (isNaN(xy.y))
-					xy.y = 300;
-				line.nodes.push(xy);
+				render();
 				
-				offset += 50;
-				if (offset > Game.instance.windowSize.x) {
-					line.x = 5;
-					line.moveNodes();
+				for (var j:int = 0; j < fixtures.length; ++j) {
+					bodies[j].DestroyFixture(fixtures[j]);
+					getGame().getWorld().DestroyBody(bodies[j]);
 				}
-				if (line.distance >= 100 && line.distance % 100 == 0) {
-					score++;
+			
+				fixtures = [];
+				bodies = [];
+				
+				var last:b2Vec2 = nodes[0];
+				for (var i:int = 1; i < nodes.length; ++i) {
+					var polygon:b2PolygonShape = new b2PolygonShape();
+					var fixtureDef:b2FixtureDef = new b2FixtureDef();
+					fixtureDef.density = 0;
+					var current:b2Vec2 = nodes[i];
+					
+					var reverse:Boolean = getGame().getWorld().GetGravity().y > 0 ? false : true;
+					var value:Number    = reverse ? -600 : 600;
+					
+					var vertices:Array = [
+						new b2Vec2(last.x, last.y),
+						new b2Vec2(current.x, current.y),
+						new b2Vec2(current.x, current.y + value),
+						new b2Vec2(last.x, last.y + value)
+					];
+					if (reverse == true)
+						vertices.reverse();
+						
+					polygon.SetAsArray(vertices);
+					
+					fixtureDef.shape = polygon;
+					var body:b2Body = getGame().getWorld().CreateBody(bodyDef);
+					fixture = body.CreateFixture(fixtureDef);
+					
+					bodies.push(body);
+					fixtures.push(fixture);
+					
+					last = current;
 				}
+				
 			}
-		}
-		
-		private function onLoadComplete(e:Event):void {
-			_audio.removeEventListener(_audio.FILE_LOADED, onLoadComplete);
-			_isLoaded = true;
-			_audio.startAudio();
-		
 		}
 		
 		public override function update(time:Time):void {
-			render();
-		}
-		
-		public override function render():void {
-			if (_isLoaded) {
-				
-				line.render(graphics);
+			super.update(time);
+			
+			for (var i:int = 0; i < nodes.length; ++i) {
+				nodes[i].x -= animationspeed;
 			}
 		}
 		
-		public function getLine():Line {
-			return line;
+		public override function render():void {
+			super.render();
+			
+			if (nodes.length == 0) {
+				return;
+			}
+			
+			graphics.clear();
+			graphics.lineStyle(1, 0xffff00);
+			graphics.moveTo(nodes[0].x, nodes[0].y);
+			
+			for (var i:int = 1; i < nodes.length; ++i) {
+				graphics.lineTo(nodes[i].x, nodes[i].y);
+			}
+			
+			graphics.endFill();
 		}
 	}
 }

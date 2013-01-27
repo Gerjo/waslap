@@ -4,9 +4,18 @@ package entities {
 	
 	public class JumpLine extends Entity {
 		private var _height:Number;
+		private var _upIsDead:Boolean;
 		
-		public function JumpLine(height:Number) {
+		public function JumpLine(height:Number, upIsDead:Boolean) {
 			_height = height;
+			_upIsDead = upIsDead;
+		}
+		
+		public function getHeight() : Number {
+			return _height;
+		}
+		public function upIsDead() : Boolean {
+			return _upIsDead;
 		}
 		
 		override public function render():void 

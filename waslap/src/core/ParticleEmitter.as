@@ -25,10 +25,10 @@ package core
 		public var color:uint;
 		public var randomnessHalf:Number;
 		public var particle:Particle;
-		private var direction:b2Vec2;
+		public var direction:b2Vec2;
 
 		
-		public function ParticleEmitter(direction:b2Vec2, count:uint = 10, color:uint = 0x000000, lifetime:Number = 0.5, totalLifetime:Number = -1.0, speed:Number = 10.0, scale:Number = 0.0 - 0.05, density:Number = 0.015, randomness:int = 200)
+		public function ParticleEmitter(direction:b2Vec2, count:uint = 10, color:uint = 0x000000, lifetime:Number = 0.5, totalLifetime:Number = -1.0, speed:Number = 10.0, scale:Number = 1, density:Number = 0.015, randomness:int = 200)
 		{
 			this.count = count;
 			this.scale = scale;
@@ -104,7 +104,7 @@ package core
 			for (var i:uint = 0; i < particles.length; ++i){
 				graphics.beginFill(color, 0.2);
 				graphics.lineStyle(1, color);
-				graphics.drawEllipse(particles[i].position.x, particles[i].position.y, 10, 10);
+				graphics.drawEllipse(particles[i].position.x, particles[i].position.y, 10 * scale, 10 * scale);
 				graphics.endFill();
 			}
 		}

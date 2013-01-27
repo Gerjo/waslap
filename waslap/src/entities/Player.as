@@ -13,6 +13,7 @@ package entities {
 	import core.Entity;
 	import core.Game;
 	import core.Message;
+	import core.ParticleEmitter;
 	import core.SpriteSheet;
 	import core.Time;
 	import core.IUpdatable;
@@ -25,29 +26,41 @@ package entities {
 		private var myBody:b2BodyDef = new b2BodyDef();
 		private var myBody2:b2Body;
 		
+		private var spartacles:ParticleEmitter;
+		private var _isGameOverYet:Boolean;
+		private var prevPos:b2Vec2 = new b2Vec2();
+		
+		private var jumpSteps:Number = 0;
+		
 		public function Player() {
-			myBody.position.Set(100, 100);
+			myBody.position.Set(Math.random() * 800, 250);
 			myBody.type = b2Body.b2_dynamicBody;
-			var myCircle:b2CircleShape = new b2CircleShape(10);
+			var myCircle:b2PolygonShape = new b2PolygonShape();
+			myCircle.SetAsBox(10, 10);
 			var myFixture:b2FixtureDef = new b2FixtureDef();
 			var myMass:b2MassData = new b2MassData();
 			myMass.mass = 0.00000002;
 			
 			myFixture.shape = myCircle;
 			myFixture.density = 1;
-			myFixture.friction = 0.91;
+			myFixture.friction = 0.00091;
+			myFixture.restitution = 0;
 			
 			myBody2 = getGame().getWorld().CreateBody(myBody);
 			myBody2.SetMassData(myMass);
 			myBody2.CreateFixture(myFixture);
 			
-			addChild(new SpriteSheet("running", 100, 100).center().top(-75));
+			_isGameOverYet = false;
+
+			addChild(spartacles = new ParticleEmitter(new b2Vec2(-1, -1), 50, 0x0000ff, 1, -1, 10, 0.5, 0.015, 200));
+
+			addChild(new SpriteSheet("running", 100, 100).center().top( -75));
+			
+			spartacles.y = -20;
 		}
 		
 		override public function render():void {
-			graphics.beginFill(0xff0000);
-			graphics.drawCircle(0, 0, 10);
-			graphics.endFill();
+			super.render();
 		}
 		
 		override public function update(time:Time):void {
@@ -60,6 +73,36 @@ package entities {
 			else
 				_onGround = false;
 		
+			spartacles.direction = prevPos.Copy();
+			spartacles.direction.Subtract(getPosition());
+			spartacles.direction.Normalize();
+			
+			prevPos = getPosition();
+			
+			
+			if (jumpSteps > 0) {
+				if (!_isFlipped) {
+					var v:b2Vec2 = myBody2.GetLinearVelocity();
+					v.y = 10;
+					myBody2.SetLinearVelocity(v);
+					myBody2.ApplyForce(new b2Vec2(0, -3000000), myBody2.GetWorldCenter());
+				} else {
+					myBody2.ApplyForce(new b2Vec2(0, 3000000), myBody2.GetWorldCenter());
+				}
+				
+				--jumpSteps;
+			}
+			
+			for each(var jumpLine:JumpLine in getGame()._jumpLines) {
+				var myPos:b2Vec2 = getPosition();
+				if ((jumpLine.getHeight() > myPos.y && jumpLine.upIsDead()) ||
+					(jumpLine.getHeight() < myPos.y && !jumpLine.upIsDead()) || myPos.x > stage.stageWidth || myPos.x < 0) {
+						if (!_isGameOverYet) { 
+							_isGameOverYet = true;
+							getGame().gameover();
+						}
+					}
+			}
 		}
 		
 		override public function handleMessage(msg:Message):void {
@@ -79,11 +122,7 @@ package entities {
 				return;
 			}
 			
-			if (!_isFlipped) {
-				myBody2.ApplyForce(new b2Vec2(0, -3000000), myBody2.GetWorldCenter());
-			} else {
-				myBody2.ApplyForce(new b2Vec2(0, 3000000), myBody2.GetWorldCenter());
-			}
+			jumpSteps = 30;
 			
 			_isJumping = false;
 		}

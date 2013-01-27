@@ -10,7 +10,7 @@ package entities
 	 * @author Gerard Meier
 	 */
 	public class Button extends Image {
-		
+
 		public static function AlignUnder(top:Sprite, bottom:Sprite, spacing:Number = 10) : void {
 			//bottom.x = top.x;
 			bottom.y = top.y + top.height + spacing;
@@ -49,11 +49,8 @@ package entities
 		public function onHover(e:Event) : void {
 			load(hover);
 			
-			
-			
 			if (hoverCallback != null) {
 				hoverCallback();
-				trace("hovahasdasd");
 			}
 		}
 		
