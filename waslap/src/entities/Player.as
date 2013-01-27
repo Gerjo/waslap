@@ -30,6 +30,8 @@ package entities {
 		
 		private var prevPos:b2Vec2 = new b2Vec2();
 		
+		private var jumpSteps:Number = 0;
+		
 		public function Player() {
 			myBody.position.Set(Math.random() * 800, 100);
 			myBody.type = b2Body.b2_dynamicBody;
@@ -41,14 +43,14 @@ package entities {
 			myFixture.shape = myCircle;
 			myFixture.density = 1;
 			myFixture.friction = 0.00091;
+			myFixture.restitution = 1;
 			
 			myBody2 = getGame().getWorld().CreateBody(myBody);
 			myBody2.SetMassData(myMass);
 			myBody2.CreateFixture(myFixture);
 			
-			addChild(new SpriteSheet("running", 100, 100).center().top( -75));
-			
 			addChild(spartacles = new ParticleEmitter(new b2Vec2(-1, -1), 50, 0xffffff, 1, -1, 10, 0.1, 0.015, 200));
+			addChild(new SpriteSheet("running", 100, 100).center().top( -75));
 		}
 		
 		override public function render():void {
@@ -72,6 +74,20 @@ package entities {
 			spartacles.direction.Normalize();
 			
 			prevPos = getPosition();
+			
+			
+			if (jumpSteps > 0) {
+				if (!_isFlipped) {
+					var v:b2Vec2 = myBody2.GetLinearVelocity();
+					v.y = 10;
+					myBody2.SetLinearVelocity(v);
+					myBody2.ApplyForce(new b2Vec2(0, -3000000), myBody2.GetWorldCenter());
+				} else {
+					myBody2.ApplyForce(new b2Vec2(0, 3000000), myBody2.GetWorldCenter());
+				}
+				
+				--jumpSteps;
+			}
 		}
 		
 		override public function handleMessage(msg:Message):void {
@@ -91,11 +107,7 @@ package entities {
 				return;
 			}
 			
-			if (!_isFlipped) {
-				myBody2.ApplyForce(new b2Vec2(0, -3000000), myBody2.GetWorldCenter());
-			} else {
-				myBody2.ApplyForce(new b2Vec2(0, 3000000), myBody2.GetWorldCenter());
-			}
+			jumpSteps = 30;
 			
 			_isJumping = false;
 		}

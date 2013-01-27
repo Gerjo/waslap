@@ -35,6 +35,7 @@ package core
 		public function Game() {
 			instance 		= this;
 			// NB: don't do stuff here, use init().
+
 		}
 		
 		private function loadGameState() : void {
@@ -63,10 +64,10 @@ package core
 			
 			// Le player, because that's not obvious, ehhh?
 			
-			for (var i:int = 0; i < 30; ++i) {
+			for (var i:int = 0; i < 3; ++i) {
 				_entities.addChild(_player = new Player());
 			}
-			//debugDraw();
+			debugDraw();
 		}
 		
 
