@@ -1,4 +1,5 @@
-package core {
+package core
+{
 	import Box2D.Dynamics.b2Body;
 	import Box2D.Dynamics.b2DebugDraw;
 	import Box2D.Dynamics.b2World;
@@ -10,7 +11,8 @@ package core {
 	import Box2D.Common.Math.b2Vec2;
 	import flash.text.TextField;
 	
-	public class Game extends Entity {
+	public class Game extends Entity
+	{
 		public static var instance:Game; // hack hack hack!
 		public var windowSize:b2Vec2 = new b2Vec2(800, 600);
 		public var halfWindowSize:b2Vec2 = new b2Vec2(windowSize.x * 0.5, windowSize.y * 0.5);
@@ -33,14 +35,17 @@ package core {
 		public var gameState:GameState;
 		public var menuState:MenuState;
 		
-		public function Game() {
+		public function Game()
+		{
 			instance = this;
 			// NB: don't do stuff here, use init().
 		
 		}
 		
-		public function loadGameState(sound:String):void {
-			if (!isLoaded) {
+		public function loadGameState(sound:String):void
+		{
+			if (!isLoaded)
+			{
 				addChild(gameState = new GameState());
 				gameState.addChild(_background);
 				gameState.addChild(_entities);
@@ -59,8 +64,10 @@ package core {
 				_entities.addChild(_ground = new Ground(sound));
 				_gui.addChild(new FrameCounter());
 				_gui.addChild(_score);
-				_gui.addChild(new JumpLine(200));
-				_gui.addChild(new JumpLine(400));
+				_jumpLines = [new JumpLine(200, true), new JumpLine(400, false)];
+				
+				for each (var j:JumpLine in _jumpLines)
+					_gui.addChild(j);
 				
 				// Le player, because that's not obvious, ehhh?
 				_entities.addChild(_player = new Player());
@@ -72,20 +79,21 @@ package core {
 			}
 		}
 		
-		public override function init():void {
+		public override function init():void
+		{
 			stage.frameRate = _fps;
 			stage.focus = this;
-			
-			
 			
 			addChild(menuState = new MenuState());
 		}
 		
-		public function enterFrame(event:Event):void {
+		public function enterFrame(event:Event):void
+		{
 			this.update(_time);
 		}
 		
-		public function debugDraw():void {
+		public function debugDraw():void
+		{
 			return;
 			var debugDraw:b2DebugDraw = new b2DebugDraw();
 			var debugSprite:Sprite = new Sprite();
@@ -96,25 +104,29 @@ package core {
 			_world.SetDebugDraw(debugDraw);
 		}
 		
-		public function gameover():void {
+		public function gameover():void
+		{
 			trace("You're game over.");
 			gameState.hide();
 			resetEverythingBackToDefaultsAndYesIKnowThisIsALongFunctionNameSomePeopleEnjoyCodeCompletion();
-		
-			//menuState.show();
+			
+			menuState.show();
 		
 			//TODO: Some bloody message box bugging you about your highscore.
 		}
 		
-		public function resetEverythingBackToDefaultsAndYesIKnowThisIsALongFunctionNameSomePeopleEnjoyCodeCompletion():void {
-			removeChild(gameState);
-			removeChild(input);
-			_gui.removeChild(_score);
+		public function resetEverythingBackToDefaultsAndYesIKnowThisIsALongFunctionNameSomePeopleEnjoyCodeCompletion():void
+		{
+			//removeChild(gameState);
+			//removeChild(input);
+			//_gui.removeChild(_score);
 		}
 		
-		public override function update(time:Time):void {
+		public override function update(time:Time):void
+		{
 			super.update(time);
-			if (isLoaded) {
+			if (isLoaded)
+			{
 				_score.text = "score = " + _ground.score;
 				
 				_world.Step(1 / _fps, 2, 4);
@@ -123,11 +135,13 @@ package core {
 			}
 		}
 		
-		public function getWorld():b2World {
+		public function getWorld():b2World
+		{
 			return _world;
 		}
 		
-		public function getPlayer():Player {
+		public function getPlayer():Player
+		{
 			return _player;
 		}
 	}
